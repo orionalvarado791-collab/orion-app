@@ -623,6 +623,105 @@ label{display:block;font-size:14px;color:var(--tx2);margin-bottom:6px}
   </div>
 </div>
 
+<!-- NUTRITION PAGE -->
+<div id="page-nutrition" class="page">
+  <div class="app-header"><h1>🍽️ Nutrition</h1><div class="sub">Calories · Macros · Food Bot</div></div>
+
+  <div class="pill-tabs">
+    <div class="pill active" onclick="switchNut('tracker',this)">📊 Tracker</div>
+    <div class="pill" onclick="switchNut('scan',this)">📷 Scan Food</div>
+    <div class="pill" onclick="switchNut('bot',this)">🤖 Food Bot</div>
+  </div>
+
+  <!-- TRACKER TAB -->
+  <div id="nut-tracker">
+    <div class="card">
+      <div class="card-title">Today's Nutrition Goals</div>
+      <div class="tip-b" style="margin-bottom:12px">
+        <strong>Your Daily Targets</strong>
+        <p>To lose fat and build muscle at 190 lbs: ~<strong>2,000 calories</strong>, <strong>150g protein</strong>, <strong>200g carbs</strong>, <strong>60g fat</strong> per day.</p>
+      </div>
+      <div class="stat-grid">
+        <div class="stat"><div class="slb">Calories</div><div class="sv"><span id="nut-cal">0</span><span class="su">/2000</span></div></div>
+        <div class="stat"><div class="slb">Protein</div><div class="sv"><span id="nut-pro">0</span><span class="su">g/150</span></div></div>
+        <div class="stat"><div class="slb">Carbs</div><div class="sv"><span id="nut-carb">0</span><span class="su">g/200</span></div></div>
+        <div class="stat"><div class="slb">Fat</div><div class="sv"><span id="nut-fat">0</span><span class="su">g/60</span></div></div>
+      </div>
+      <div class="pw"><div class="pl"><span>Calories</span><span id="nut-cal-pct">0%</span></div><div class="pt"><div class="pf" id="nut-cal-bar" style="width:0%"></div></div></div>
+      <div class="pw"><div class="pl"><span>Protein</span><span id="nut-pro-pct">0%</span></div><div class="pt"><div class="pf" id="nut-pro-bar" style="width:0%"></div></div></div>
+      <div class="pw"><div class="pl"><span>Carbs</span><span id="nut-carb-pct">0%</span></div><div class="pt"><div class="pf" id="nut-carb-bar" style="width:0%"></div></div></div>
+      <div class="pw"><div class="pl"><span>Fat</span><span id="nut-fat-pct">0%</span></div><div class="pt"><div class="pf" id="nut-fat-bar" style="width:0%"></div></div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Log a Meal Manually</div>
+      <input type="text" id="meal-name" placeholder="Food name (e.g. Chicken and rice)">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div><label>Calories</label><input type="number" id="meal-cal" placeholder="e.g. 450" style="margin:0"></div>
+        <div><label>Protein (g)</label><input type="number" id="meal-pro" placeholder="e.g. 35" style="margin:0"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+        <div><label>Carbs (g)</label><input type="number" id="meal-carb" placeholder="e.g. 50" style="margin:0"></div>
+        <div><label>Fat (g)</label><input type="number" id="meal-fat" placeholder="e.g. 12" style="margin:0"></div>
+      </div>
+      <button class="btn btn-p" style="margin-top:12px" onclick="logMeal()">Add to Today's Log</button>
+    </div>
+
+    <div class="slabel">Today's Food Log</div>
+    <div id="food-log-list"></div>
+    <button class="btn btn-g" onclick="resetFoodLog()">Reset Today's Log</button>
+  </div>
+
+  <!-- SCAN TAB -->
+  <div id="nut-scan" style="display:none">
+    <div class="card">
+      <div class="card-title">📷 Scan Your Food</div>
+      <p style="font-size:14px;color:var(--tx2);margin-bottom:14px">Take a photo of any meal or food and AI will estimate the calories and all the nutrients in it. Then you can add it straight to your daily log.</p>
+      <div class="uz" onclick="document.getElementById('food-photo').click()">
+        <div style="font-size:30px;margin-bottom:8px">🍕</div>
+        <div style="font-size:15px;font-weight:600">Tap to photograph your food</div>
+        <div style="font-size:13px;margin-top:4px;color:var(--rl)">AI will identify and estimate nutrition</div>
+        <input type="file" id="food-photo" accept="image/*" capture="environment" onchange="analyzeFoodPhoto(this)">
+      </div>
+      <div id="food-scan-preview" style="display:none;margin-top:12px"></div>
+      <div id="food-scan-result" class="ar" style="display:none;margin-top:10px">
+        <div class="art">Nutrition Analysis</div>
+        <div class="arb" id="food-scan-text"></div>
+      </div>
+      <div id="food-scan-add" style="display:none;margin-top:10px">
+        <div style="background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--rs);padding:14px;margin-bottom:10px">
+          <div style="font-size:13px;color:var(--tx2);margin-bottom:10px">Confirm before adding to log:</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div><label>Calories</label><input type="number" id="scan-cal" style="margin:0"></div>
+            <div><label>Protein (g)</label><input type="number" id="scan-pro" style="margin:0"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+            <div><label>Carbs (g)</label><input type="number" id="scan-carb" style="margin:0"></div>
+            <div><label>Fat (g)</label><input type="number" id="scan-fat" style="margin:0"></div>
+          </div>
+          <input type="text" id="scan-name" placeholder="Food name" style="margin-top:8px">
+        </div>
+        <button class="btn btn-p" onclick="addScannedMeal()">Add to Today's Log ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOT TAB -->
+  <div id="nut-bot" style="display:none">
+    <div class="card" style="padding:14px">
+      <div class="card-title">🤖 Nutrition Bot</div>
+      <p style="font-size:13px;color:var(--tx2);margin-bottom:12px">Ask anything about food, calories, what to eat, or how you're tracking today. The bot knows your daily goals and what you've logged.</p>
+      <div class="chat-wrap" id="nut-chat-wrap" style="max-height:350px">
+        <div class="msg msg-ai">Hey! I'm your nutrition bot. I know your goals — 2,000 calories, 150g protein per day to lose fat and build muscle. Ask me what to eat, how many calories something has, or if you're on track today. What's up?</div>
+      </div>
+      <div class="chat-input-row" style="margin-top:10px">
+        <input type="text" id="nut-chat-in" placeholder="Ask about food or nutrition..." onkeypress="if(event.key==='Enter')sendNutChat()" style="margin:0">
+        <button class="btn btn-p" style="width:auto;padding:0 18px;margin:0;min-height:52px" onclick="sendNutChat()">Send</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </div><!-- /container -->
 
 <div class="nav">
@@ -634,6 +733,7 @@ label{display:block;font-size:14px;color:var(--tx2);margin-bottom:6px}
   <div class="ni" onclick="showPage('tasks',this)"><span class="nic">✅</span>Tasks</div>
   <div class="ni" onclick="showPage('love',this)"><span class="nic">💜</span>Love</div>
   <div class="ni" onclick="showPage('skills',this)"><span class="nic">⚡</span>Skills</div>
+  <div class="ni" onclick="showPage('nutrition',this)"><span class="nic">🍽️</span>Food</div>
   <div class="ni" onclick="showPage('ai',this)"><span class="nic">🤖</span>AI</div>
 </div>
 
@@ -1104,6 +1204,218 @@ let chatHistory=[];
 async function sendChat(){const inp=document.getElementById('chat-in');const msg=inp.value.trim();if(!msg)return;inp.value='';appendMsg(msg,'user','chat-wrap');chatHistory.push({role:'user',content:msg});const wrap=document.getElementById('chat-wrap');const thinking=document.createElement('div');thinking.className='msg msg-ai';thinking.innerHTML='<span class="spinner"></span>';wrap.appendChild(thinking);wrap.scrollTop=wrap.scrollHeight;
 try{const msgs=chatHistory.length===1?[{role:'user',content:getAppContext()+'\n\nUser message: '+msg}]:chatHistory;const txt=await claude(msgs,1000);thinking.remove();appendMsg(txt,'ai','chat-wrap');chatHistory.push({role:'assistant',content:txt});}catch(e){thinking.remove();appendMsg('Could not connect. Check your internet.','ai','chat-wrap');}}
 function appendMsg(txt,role,wrapId){const wrap=document.getElementById(wrapId);const div=document.createElement('div');div.className='msg '+(role==='ai'?'msg-ai':'msg-u');div.textContent=txt;wrap.appendChild(div);wrap.scrollTop=wrap.scrollHeight;}
+
+// NUTRITION
+function switchNut(type,el){
+  document.querySelectorAll('#page-nutrition .pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  ['tracker','scan','bot'].forEach(t=>document.getElementById('nut-'+t).style.display=t===type?'block':'none');
+  if(type==='tracker')renderFoodLog();
+}
+
+function getNutTotals(){
+  const log=S.g('food_log_'+todayKey(),[]);
+  return log.reduce((acc,m)=>({cal:acc.cal+(m.cal||0),pro:acc.pro+(m.pro||0),carb:acc.carb+(m.carb||0),fat:acc.fat+(m.fat||0)}),{cal:0,pro:0,carb:0,fat:0});
+}
+
+function todayKey(){
+  const n=new Date();
+  return `${n.getFullYear()}-${n.getMonth()+1}-${n.getDate()}`;
+}
+
+function updateNutUI(){
+  const t=getNutTotals();
+  document.getElementById('nut-cal').textContent=t.cal;
+  document.getElementById('nut-pro').textContent=t.pro;
+  document.getElementById('nut-carb').textContent=t.carb;
+  document.getElementById('nut-fat').textContent=t.fat;
+  const calPct=Math.round(Math.min(100,(t.cal/2000)*100));
+  const proPct=Math.round(Math.min(100,(t.pro/150)*100));
+  const carbPct=Math.round(Math.min(100,(t.carb/200)*100));
+  const fatPct=Math.round(Math.min(100,(t.fat/60)*100));
+  document.getElementById('nut-cal-bar').style.width=calPct+'%';
+  document.getElementById('nut-pro-bar').style.width=proPct+'%';
+  document.getElementById('nut-carb-bar').style.width=carbPct+'%';
+  document.getElementById('nut-fat-bar').style.width=fatPct+'%';
+  document.getElementById('nut-cal-pct').textContent=calPct+'%';
+  document.getElementById('nut-pro-pct').textContent=proPct+'%';
+  document.getElementById('nut-carb-pct').textContent=carbPct+'%';
+  document.getElementById('nut-fat-pct').textContent=fatPct+'%';
+}
+
+function logMeal(){
+  const name=document.getElementById('meal-name').value.trim()||'Food';
+  const cal=parseInt(document.getElementById('meal-cal').value)||0;
+  const pro=parseInt(document.getElementById('meal-pro').value)||0;
+  const carb=parseInt(document.getElementById('meal-carb').value)||0;
+  const fat=parseInt(document.getElementById('meal-fat').value)||0;
+  if(!cal&&!pro)return alert('Enter at least calories.');
+  const log=S.g('food_log_'+todayKey(),[]);
+  log.push({id:Date.now(),name,cal,pro,carb,fat,time:new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})});
+  S.s('food_log_'+todayKey(),log);
+  document.getElementById('meal-name').value='';
+  document.getElementById('meal-cal').value='';
+  document.getElementById('meal-pro').value='';
+  document.getElementById('meal-carb').value='';
+  document.getElementById('meal-fat').value='';
+  updateNutUI();
+  renderFoodLog();
+}
+
+function renderFoodLog(){
+  const log=S.g('food_log_'+todayKey(),[]);
+  const el=document.getElementById('food-log-list');
+  if(!log.length){el.innerHTML='<div style="font-size:14px;color:var(--tx3);padding:12px;text-align:center">No food logged yet today</div>';return;}
+  el.innerHTML=log.map(m=>`
+    <div class="gi" style="margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="font-size:15px;font-weight:600">${m.name}</span>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:12px;color:var(--tx3)">${m.time||''}</span>
+          <span style="cursor:pointer;color:var(--tx3);font-size:14px;padding:2px 6px" onclick="deleteMeal(${m.id})">✕</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <span style="font-size:13px;color:var(--rl);font-weight:600">${m.cal} cal</span>
+        <span style="font-size:13px;color:var(--tx2)">P: ${m.pro}g</span>
+        <span style="font-size:13px;color:var(--tx2)">C: ${m.carb}g</span>
+        <span style="font-size:13px;color:var(--tx2)">F: ${m.fat}g</span>
+      </div>
+    </div>`).join('');
+}
+
+function deleteMeal(id){
+  const log=S.g('food_log_'+todayKey(),[]).filter(m=>m.id!==id);
+  S.s('food_log_'+todayKey(),log);
+  updateNutUI();
+  renderFoodLog();
+}
+
+function resetFoodLog(){
+  S.s('food_log_'+todayKey(),[]);
+  updateNutUI();
+  renderFoodLog();
+}
+
+// Food photo AI analysis
+async function analyzeFoodPhoto(input){
+  if(!input.files[0])return;
+  const file=input.files[0];
+  const b64=await toB64(file);
+  const preview=document.getElementById('food-scan-preview');
+  preview.style.display='block';
+  preview.innerHTML=`<img src="data:${file.type};base64,${b64}" style="width:100%;border-radius:10px;max-height:220px;object-fit:cover">`;
+  const rd=document.getElementById('food-scan-result');
+  const rt=document.getElementById('food-scan-text');
+  rd.style.display='block';
+  rt.innerHTML='<span class="spinner"></span> Analyzing your food...';
+  document.getElementById('food-scan-add').style.display='none';
+  try{
+    const txt=await claude([{role:'user',content:[
+      {type:'image',source:{type:'base64',media_type:file.type,data:b64}},
+      {type:'text',text:`Analyze this food photo for a 15-year-old male trying to lose fat (goal: 2000 cal/day) and build muscle (goal: 150g protein/day). Identify every food item visible and estimate:
+1. Total calories
+2. Protein (grams)
+3. Carbohydrates (grams)  
+4. Fat (grams)
+5. Any key vitamins or minerals worth noting
+6. Is this a good choice for his goals? One sentence honest answer.
+
+Then on the LAST LINE output ONLY this exact format so I can parse it:
+MACROS:calories,protein,carbs,fat,foodname
+
+Example last line: MACROS:650,42,55,18,Chicken Rice Bowl`}
+    ]}]);
+    rt.textContent=txt;
+    // Parse macros from last line
+    const macroLine=txt.split('\n').find(l=>l.startsWith('MACROS:'));
+    if(macroLine){
+      const parts=macroLine.replace('MACROS:','').split(',');
+      document.getElementById('scan-cal').value=parts[0]||'';
+      document.getElementById('scan-pro').value=parts[1]||'';
+      document.getElementById('scan-carb').value=parts[2]||'';
+      document.getElementById('scan-fat').value=parts[3]||'';
+      document.getElementById('scan-name').value=parts.slice(4).join(',')||'Scanned Meal';
+      document.getElementById('food-scan-add').style.display='block';
+    }
+  }catch(e){rt.textContent='Could not analyze. Check your internet and try again.';}
+}
+
+function addScannedMeal(){
+  const name=document.getElementById('scan-name').value.trim()||'Scanned Meal';
+  const cal=parseInt(document.getElementById('scan-cal').value)||0;
+  const pro=parseInt(document.getElementById('scan-pro').value)||0;
+  const carb=parseInt(document.getElementById('scan-carb').value)||0;
+  const fat=parseInt(document.getElementById('scan-fat').value)||0;
+  const log=S.g('food_log_'+todayKey(),[]);
+  log.push({id:Date.now(),name,cal,pro,carb,fat,time:new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})});
+  S.s('food_log_'+todayKey(),log);
+  document.getElementById('food-scan-add').style.display='none';
+  document.getElementById('food-scan-result').style.display='none';
+  document.getElementById('food-scan-preview').style.display='none';
+  updateNutUI();
+  // Switch to tracker to show it was added
+  document.querySelectorAll('#page-nutrition .pill').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('#page-nutrition .pill')[0].classList.add('active');
+  ['tracker','scan','bot'].forEach(t=>document.getElementById('nut-'+t).style.display=t==='tracker'?'block':'none');
+  renderFoodLog();
+  alert('Added to your food log! ✅');
+}
+
+// Nutrition bot
+function getNutContext(){
+  const t=getNutTotals();
+  const log=S.g('food_log_'+todayKey(),[]);
+  const foods=log.map(m=>m.name).join(', ')||'nothing yet';
+  return `You are Orion's personal nutrition bot. Here is his current data:
+- Age: 15, Weight: ~190 lbs, Goal: lose fat to 162.5 lbs while building muscle
+- Daily targets: 2,000 calories, 150g protein, 200g carbs, 60g fat
+- Today so far: ${t.cal} calories, ${t.pro}g protein, ${t.carb}g carbs, ${t.fat}g fat
+- Foods logged today: ${foods}
+- Calories remaining: ${Math.max(0,2000-t.cal)} cal
+- Protein remaining: ${Math.max(0,150-t.pro)}g protein needed
+Be helpful, direct, and simple. Talk like a knowledgeable friend. Keep replies short.`;
+}
+
+let nutChatHistory=[];
+async function sendNutChat(){
+  const inp=document.getElementById('nut-chat-in');
+  const msg=inp.value.trim();
+  if(!msg)return;
+  inp.value='';
+  appendNutMsg(msg,'user');
+  nutChatHistory.push({role:'user',content:msg});
+  const wrap=document.getElementById('nut-chat-wrap');
+  const thinking=document.createElement('div');
+  thinking.className='msg msg-ai';
+  thinking.innerHTML='<span class="spinner"></span>';
+  wrap.appendChild(thinking);
+  wrap.scrollTop=wrap.scrollHeight;
+  try{
+    const msgs=nutChatHistory.length===1
+      ?[{role:'user',content:getNutContext()+'\n\nUser: '+msg}]
+      :nutChatHistory;
+    const txt=await claude(msgs,600);
+    thinking.remove();
+    appendNutMsg(txt,'ai');
+    nutChatHistory.push({role:'assistant',content:txt});
+  }catch(e){
+    thinking.remove();
+    appendNutMsg('Could not connect. Check your internet.','ai');
+  }
+}
+function appendNutMsg(txt,role){
+  const wrap=document.getElementById('nut-chat-wrap');
+  const div=document.createElement('div');
+  div.className='msg '+(role==='ai'?'msg-ai':'msg-u');
+  div.textContent=txt;
+  wrap.appendChild(div);
+  wrap.scrollTop=wrap.scrollHeight;
+}
+
+// Init nutrition on load
+updateNutUI();
+renderFoodLog();
 
 // NOTIFICATIONS
 if(!S.g('notif_asked',false)){S.s('notif_asked',true);setTimeout(()=>{if('Notification' in window&&Notification.permission==='default')if(confirm('Allow daily reminders? Orion\'s App will remind you to log your goals.'))Notification.requestPermission().then(p=>{if(p==='granted')new Notification('Orion\'s App',{body:'Reminders on. You\'re locked in. 🔥'});});},2500);}
