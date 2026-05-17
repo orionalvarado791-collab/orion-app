@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Orion's App">
+<title>Orion's App</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0a;--bg2:#111;--bg3:#1a1a1a;--card:#141414;--red:#e03131;--rl:#ff4444;--rdim:rgba(224,49,49,.15);--rb:rgba(224,49,49,.3);--tx:#f5f5f5;--tx2:#aaa;--tx3:#555;--bdr:rgba(255,255,255,.08);--r:16px;--rs:12px}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{font-family:Inter,sans-serif;background:var(--bg);color:var(--tx);font-size:16px;line-height:1.55;padding-bottom:90px;min-height:100vh;-webkit-font-smoothing:antialiased}
+.container{max-width:480px;margin:0 auto;padding:16px}
+.page{display:none}.page.active{display:block;animation:fu .35s ease both}
+@keyframes fu{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.app-header{padding:22px;margin-bottom:14px;background:var(--card);border-radius:var(--r);border:1px solid var(--bdr);position:relative;overflow:hidden}
+.app-header::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--red),transparent)}
+.app-header h1{font-size:24px;font-weight:800;letter-spacing:-.5px}
+.app-header .sub{font-size:14px;color:var(--tx2);margin-top:4px}
+.pill-hdr{display:inline-block;margin-top:10px;background:var(--rdim);border:1px solid var(--rb);color:var(--rl);padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600}
+.card{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:18px;margin-bottom:14px}
+.card-title{font-size:16px;font-weight:700;margin-bottom:14px}
+.slabel{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--red);margin:18px 0 10px}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.stat{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--rs);padding:14px;text-align:center}
+.slb{font-size:11px;color:var(--tx3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px}
+.sv{font-size:22px;font-weight:700}.su{font-size:13px;color:var(--tx2);font-weight:400}
+.pw{margin:10px 0}.pl{display:flex;justify-content:space-between;font-size:14px;color:var(--tx2);margin-bottom:5px}
+.pt{height:7px;background:var(--bg3);border-radius:6px;overflow:hidden}
+.pf{height:100%;background:var(--red);border-radius:6px;transition:width 1s ease;min-width:0}
+.gi{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--rs);padding:14px;margin-bottom:10px}
+.gr{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.gn{font-size:15px;font-weight:600}.dt{font-size:14px;color:var(--tx2);margin:3px 0}
+.badge{background:var(--rdim);border:1px solid var(--rb);color:var(--rl);padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600}
+input,textarea,select{width:100%;background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--rs);padding:14px;color:var(--tx);font-size:16px;font-family:Inter,sans-serif;margin-bottom:12px;transition:border-color .2s;-webkit-appearance:none}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--red)}
+input::placeholder,textarea::placeholder{color:var(--tx3)}
+textarea{resize:vertical;min-height:80px}
+select option{background:var(--bg2)}
+label{display:block;font-size:14px;color:var(--tx2);margin-bottom:6px}
+.btn{width:100%;padding:16px;border:none;border-radius:var(--rs);font-size:16px;font-family:Inter,sans-serif;font-weight:600;cursor:pointer;margin-bottom:10px;transition:all .2s;display:block;min-height:52px}
+.btn:active{transform:scale(.97)}
+.btn-p{background:var(--red);color:#fff}.btn-p:hover{background:var(--rl)}
+.btn-g{background:var(--bg3);border:1px solid var(--bdr);color:var(--tx2)}
+.ci{display:flex;align-items:center;gap:12px;padding:14px;background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--rs);margin-bottom:8px;transition:opacity .3s;min-height:52px}
+.ci.done{opacity:.45}.ci.done .cit{text-decoration:line-through}
+.cb{width:26px;height:26px;border-radius:7px;border:2px solid var(--rb);background:transparent;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s}
+.cb.on{background:var(--red);border-color:var(--red)}.cb.on::after{content:'✓';color:#fff;font-weight:700}
+.cit{font-size:15px;flex:1}.ctm{font-size:12px;color:var(--tx3);white-space:nowrap}
+.nav{position:fixed;bottom:0;left:0;right:0;background:rgba(10,10,10,.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--bdr);padding:10px 2px;padding-bottom:calc(10px + env(safe-area-inset-bottom));display:flex;z-index:100}
+.ni{flex:1;text-align:center;padding:6px 1px;color:var(--tx3);font-size:9.5px;font-weight:500;cursor:pointer;border-radius:8px;transition:color .2s;min-height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ni.active{color:var(--rl)}.nic{font-size:22px;display:block;margin-bottom:3px}
+
+/* Install banner */
+.install-banner{background:linear-gradient(135deg,rgba(224,49,49,.2),rgba(224,49,49,.08));border:1px solid var(--rb);border-radius:var(--rs);padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:12px}
+.install-banner-icon{font-size:24px;flex-shrink:0}
+.install-banner-text strong{font-size:14px;display:block;margin-bottom:2px;color:var(--tx)}
+.install-banner-text p{font-size:12px;color:var(--tx2);line-height:1.4}
+.install-close{margin-left:auto;font-size:18px;color:var(--tx3);cursor:pointer;padding:4px;flex-shrink:0}
+.wb{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--rs);margin-bottom:8px;overflow:hidden}
+.wbh{padding:12px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none}
+.wbht{font-size:14px;font-weight:600}.wba{font-size:12px;color:var(--tx3);transition:transform .2s}
+.wbb{padding:0 14px 12px;display:none}.wbb.open{display:block}.wba.open{transform:rotate(180deg)}
+.ex{padding:10px 0;border-bottom:1px solid var(--bdr)}.ex:last-child{border:none}
+.exn{font-size:14px;font-weight:600;margin-bottom:2px}.exs{font-size:13px;color:var(--tx2);margin-bottom:4px}
+.ext{font-size:12px;color:#e8a0a0;line-height:1.4}
+.eximg{width:100%;border-radius:8px;margin-top:8px;max-height:150px;object-fit:cover;display:block}
+.jb{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--rs);padding:14px;margin-bottom:8px}
+.jt{font-size:14px;font-weight:700;margin-bottom:3px}.jc{font-size:13px;color:var(--rl);margin-bottom:5px}
+.jm{font-size:12px;color:var(--tx3);margin-bottom:8px}.jl{display:inline-block;background:var(--red);color:#fff;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:600;text-decoration:none}
+.tip-b{background:var(--rdim);border:1px solid var(--rb);border-radius:var(--rs);padding:14px;margin-bottom:12px}
+.tip-b strong{font-size:13px;color:var(--rl);display:block;margin-bottom:3px}
+.tip-b p{font-size:13px;color:var(--tx2);line-height:1.5}
+.uz{border:2px dashed var(--rb);border-radius:var(--rs);padding:22px;text-align:center;cursor:pointer;color:var(--tx3);transition:all .2s}
+.uz:hover{border-color:var(--red);color:var(--rl)}.uz input{display:none}
+.ar{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--rs);padding:14px;margin-top:10px}
+.art{font-size:13px;font-weight:700;color:var(--rl);margin-bottom:7px}
+.arb{font-size:13px;color:var(--tx2);line-height:1.6;white-space:pre-wrap}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.pill-tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.pill{padding:6px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--bdr);color:var(--tx3);background:var(--bg3);transition:all .2s}
+.pill.active{background:var(--rdim);border-color:var(--rb);color:var(--rl)}
+.typing-area{width:100%;background:var(--bg3);border:2px solid var(--bdr);border-radius:var(--rs);padding:14px;font-size:15px;min-height:100px;resize:none;color:var(--tx);font-family:Inter,sans-serif;transition:border-color .2s}
+.typing-area:focus{border-color:var(--red);outline:none}
+.prompt-box{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--rs);padding:14px;font-size:15px;color:var(--tx2);line-height:1.7;margin-bottom:10px}
+.wpm-result{text-align:center;padding:16px;background:var(--rdim);border:1px solid var(--rb);border-radius:var(--rs);margin-top:10px}
+.wpm-big{font-size:36px;font-weight:800;color:var(--rl)}.wpm-lbl{font-size:13px;color:var(--tx2);margin-top:2px}
+.water-wrap{position:relative;height:90px;background:var(--bg3);border:2px solid var(--rb);border-radius:var(--rs);overflow:hidden;margin:10px 0}
+.water-fill{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(180deg,rgba(224,49,49,.6),rgba(224,49,49,.9));transition:height 1s ease}
+.water-fill::before{content:'';position:absolute;top:-5px;left:0;right:0;height:10px;background:rgba(224,49,49,.4);border-radius:50%;animation:wv 2s ease-in-out infinite}
+@keyframes wv{0%,100%{transform:scaleX(1)}50%{transform:scaleX(1.05)}}
+.water-lbl{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:15px;font-weight:700;color:var(--tx)}
+
+/* Ring progress */
+.ring-progress-wrap{display:flex;flex-direction:column;align-items:center;padding:16px 0 8px}
+.ring-svg{transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:var(--bg3);stroke-width:12}
+.ring-fill{fill:none;stroke:var(--red);stroke-width:12;stroke-linecap:round;transition:stroke-dashoffset 1.2s cubic-bezier(.34,1.56,.64,1);filter:drop-shadow(0 0 6px rgba(224,49,49,.6))}
+.ring-label{font-size:18px;font-weight:800;color:var(--tx);margin-top:10px}
+.ring-sub{font-size:13px;color:var(--tx2);margin-top:2px}
+.ring-tasks-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;justify-content:center}
+
+/* Photo grid */
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px}
+.photo-thumb{aspect-ratio:1;border-radius:8px;object-fit:cover;width:100%;cursor:pointer;border:2px solid transparent;transition:border-color .2s}
+.photo-thumb:hover{border-color:var(--red)}
+.photo-thumb-wrap{position:relative}
+.photo-date{font-size:9px;color:var(--tx3);text-align:center;margin-top:2px}
+
+/* AI Chat */
+.chat-wrap{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;max-height:400px;overflow-y:auto;padding:4px}
+.msg{padding:12px;border-radius:var(--rs);max-width:85%;font-size:14px;line-height:1.5;animation:fu .25s ease}
+.msg-ai{background:var(--bg3);border:1px solid var(--bdr);align-self:flex-start}
+.msg-u{background:var(--rdim);border:1px solid var(--rb);align-self:flex-end;color:var(--tx)}
+.chat-input-row{display:flex;gap:8px;margin-top:8px}
+.chat-input-row input{margin:0;flex:1}
+.chat-input-row button{width:auto;padding:0 16px;margin:0;flex-shrink:0}
+
+/* Love notes */
+.love-note{background:var(--rdim);border:1px solid var(--rb);border-radius:var(--rs);padding:14px;margin-bottom:8px}
+.love-note-ico{font-size:18px;margin-bottom:6px}
+.love-note-txt{font-size:14px;color:var(--tx);line-height:1.6;font-style:italic}
+.love-tr{display:flex;gap:10px;align-items:flex-start;padding:11px;background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--rs);margin-bottom:7px}
+.love-tri{font-size:18px;flex-shrink:0}
+.love-trc strong{font-size:13px;display:block;margin-bottom:2px}
+.love-trc p{font-size:13px;color:var(--tx2);line-height:1.4}
+
+/* Class cards */
+.cls-card{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--rs);margin-bottom:8px;overflow:hidden}
+.cls-head{padding:12px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+.cls-name{font-size:14px;font-weight:600}.cls-cnt{font-size:12px;color:var(--tx3)}
+.cls-body{padding:0 14px 10px;display:none}.cls-body.open{display:block}
+
+/* Study timer */
+.timer-circle{width:120px;height:120px;border-radius:50%;border:4px solid var(--rb);background:var(--bg3);display:flex;align-items:center;justify-content:center;flex-direction:column;margin:0 auto 14px;position:relative;transition:border-color .3s}
+.timer-circle.running{border-color:var(--red);box-shadow:0 0 20px rgba(224,49,49,.3)}
+.timer-num{font-size:26px;font-weight:800;font-variant-numeric:tabular-nums}
+.timer-sub{font-size:10px;color:var(--tx3)}
+
+/* Skill progress chart mini */
+.mini-chart{display:flex;align-items:flex-end;gap:3px;height:50px;padding-top:4px}
+.mini-bar{flex:1;background:var(--red);border-radius:3px 3px 0 0;min-width:8px;transition:height .5s;position:relative}
+.mini-bar::after{content:attr(data-val);position:absolute;top:-16px;left:50%;transform:translateX(-50%);font-size:8px;color:var(--tx3);white-space:nowrap}
+
+/* Expense items */
+.exp-i{display:flex;align-items:center;gap:10px;padding:10px;background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--rs);margin-bottom:6px}
+.exp-n{flex:1;font-size:14px}.exp-a{font-size:14px;font-weight:600}
+.exp-a.pos{color:#4ade80}.exp-a.neg{color:#f87171}
+.exp-del{font-size:14px;cursor:pointer;color:var(--tx3);padding:4px}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--red);border-radius:2px}
+
+/* Weather widget */
+.weather-widget{display:flex;align-items:center;gap:12px;background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--rs);padding:12px;margin-bottom:12px}
+.weather-icon{font-size:32px;flex-shrink:0}
+.weather-main{flex:1}
+.weather-temp{font-size:22px;font-weight:700}
+.weather-desc{font-size:13px;color:var(--tx2)}
+.weather-tips{font-size:12px;color:var(--tx3);margin-top:4px;line-height:1.4}
+
+/* Safari install modal */
+.safari-modal{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:999;display:none;align-items:flex-end;justify-content:center;padding:0}
+.safari-modal-box{background:var(--card);border-radius:22px 22px 0 0;padding:28px 22px 44px;width:100%;max-width:480px;border-top:2px solid var(--rb)}
+.safari-modal-title{font-size:18px;font-weight:800;margin-bottom:20px;color:var(--tx)}
+.safari-step{display:flex;gap:14px;align-items:flex-start;padding:13px 0;border-bottom:1px solid var(--bdr)}
+.safari-step:last-of-type{border:none;padding-bottom:0}
+.safari-step-num{background:var(--red);color:white;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0;margin-top:1px}
+.safari-step-text{font-size:15px;line-height:1.55;color:var(--tx)}
+.safari-step-text strong{color:var(--rl)}</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HOME -->
+<div id="page-home" class="page active">
+  <div class="app-header">
+    <h1>Orion's App ✦</h1>
+    <div class="sub" id="home-greeting">Welcome back, Orion</div>
+    <div class="pill-hdr" id="countdown-text">Loading...</div>
+  </div>
+
+  <!-- Install banner -->
+  <div class="install-banner" id="install-banner">
+    <div class="install-banner-icon">📲</div>
+    <div class="install-banner-text" style="flex:1">
+      <strong>Save to Home Screen</strong>
+      <p style="margin-bottom:8px">Open in Safari → tap <strong>Share ↑</strong> → "Add to Home Screen"</p>
+      <button onclick="openInSafari()" style="background:var(--red);color:white;border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;width:100%">Open in Safari →</button>
+    </div>
+    <div class="install-close" onclick="document.getElementById('install-banner').style.display='none'" style="align-self:flex-start">✕</div>
+  </div>
+
+  <div class="tip-b">
+    <strong>Today's Focus</strong>
+    <p id="tip-text">Loading...</p>
+  </div>
+
+  <div class="slabel">At a Glance</div>
+  <div class="stat-grid">
+    <div class="stat"><div class="slb">Weight</div><div class="sv" id="h-weight">—<span class="su"> lbs</span></div></div>
+    <div class="stat"><div class="slb">Save/Day</div><div class="sv">$<span id="h-save">64</span></div></div>
+    <div class="stat"><div class="slb">Water Left</div><div class="sv" id="h-water">128<span class="su"> oz</span></div></div>
+    <div class="stat"><div class="slb">Steps</div><div class="sv" id="h-steps">—</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Progress</div>
+    <div class="pw"><div class="pl"><span>Weight Loss</span><span id="pw-t">0%</span></div><div class="pt"><div class="pf" id="pw-b" style="width:0%"></div></div></div>
+    <div class="pw"><div class="pl"><span>Savings</span><span id="ps-t">0%</span></div><div class="pt"><div class="pf" id="ps-b" style="width:0%"></div></div></div>
+    <div class="pw"><div class="pl"><span>Workouts this week</span><span id="po-t">0/5</span></div><div class="pt"><div class="pf" id="po-b" style="width:0%"></div></div></div>
+    <div class="pw"><div class="pl"><span>Water today</span><span id="pwt-t">0 oz</span></div><div class="pt"><div class="pf" id="pwt-b" style="width:0%"></div></div></div>
+  </div>
+
+  <div class="slabel">Progress Photo Check-In</div>
+  <div class="card">
+    <p style="font-size:13px;color:var(--tx2);margin-bottom:12px;">Upload a body photo. AI will tell you what to work on and track your journey over time.</p>
+    <div class="uz" onclick="document.getElementById('home-photo').click()">
+      <div style="font-size:28px;margin-bottom:6px">📷</div>
+      <div style="font-size:14px">Tap to take or upload progress photo</div>
+      <div style="font-size:12px;margin-top:4px;color:var(--rl)">AI will analyze what to change first</div>
+      <input type="file" id="home-photo" accept="image/*" capture="environment" onchange="analyzeProgressPhoto(this)">
+    </div>
+    <div id="photo-preview-wrap" style="display:none;margin-top:10px;"></div>
+    <div id="photo-result" class="ar" style="display:none;"><div class="art">AI Analysis</div><div class="arb" id="photo-result-text"></div></div>
+    <div id="photo-history-section" style="margin-top:12px;display:none;">
+      <div class="slabel" style="margin-top:0">Your Progress Journey</div>
+      <div class="photo-grid" id="photo-grid"></div>
+    </div>
+  </div>
+
+  <div class="slabel">Face Check</div>
+  <div class="card">
+    <p style="font-size:13px;color:var(--tx2);margin-bottom:12px;">Take a selfie and AI will honestly tell you what it sees — skin, hair, face structure, anything you can work on — with simple tips to improve.</p>
+    <div class="uz" onclick="document.getElementById('face-photo').click()">
+      <div style="font-size:28px;margin-bottom:6px">🤳</div>
+      <div style="font-size:14px">Take a selfie for face analysis</div>
+      <div style="font-size:12px;margin-top:4px;color:var(--rl)">Honest feedback + simple fixes</div>
+      <input type="file" id="face-photo" accept="image/*" capture="user" onchange="analyzeFace(this)">
+    </div>
+    <div id="face-result" class="ar" style="display:none;"><div class="art">Face Analysis</div><div class="arb" id="face-result-text"></div></div>
+  </div>
+</div>
+
+<!-- FITNESS -->
+<div id="page-fitness" class="page">
+  <div class="app-header"><h1>💪 Fitness</h1><div class="sub">Smart training — not maxing out every day</div></div>
+
+  <div class="slabel">Strength Goals</div>
+  <div class="card">
+    <div class="gi">
+      <div class="gr"><span class="gn">Bench Press</span><span class="badge">180 → 225 lbs</span></div>
+      <div class="dt">Work at 135–145 lbs for 3–4 sets of 8–10 reps. As this gets easy, add 5 lbs. Your max will go up on its own.</div>
+      <div class="pw"><div class="pt"><div class="pf" id="bp-b" style="width:0%"></div></div></div>
+      <div class="dt" id="bp-t" style="color:var(--rl)">Logged: 180 lbs</div>
+    </div>
+    <div class="gi">
+      <div class="gr"><span class="gn">Squat</span><span class="badge">255 → 295 lbs</span></div>
+      <div class="dt">Work at 185–200 lbs for 3–4 sets of 8–10 reps. Focus on going low and keeping your chest up.</div>
+      <div class="pw"><div class="pt"><div class="pf" id="sq-b" style="width:0%"></div></div></div>
+      <div class="dt" id="sq-t" style="color:var(--rl)">Logged: 255 lbs</div>
+    </div>
+    <div class="gi">
+      <div class="gr"><span class="gn">Deadlift</span><span class="badge">225 → 275 lbs</span></div>
+      <div class="dt">Work at 155–175 lbs for 3–4 sets of 6–8 reps. Focus on keeping your back flat and not rounding over.</div>
+      <div class="pw"><div class="pt"><div class="pf" id="dl-b" style="width:0%"></div></div></div>
+      <div class="dt" id="dl-t" style="color:var(--rl)">Logged: 225 lbs</div>
+    </div>
+  </div>
+
+  <div class="slabel">Log Today's Exercise</div>
+  <div class="card">
+    <label>Which exercise?</label>
+    <select id="lift-type"><option value="">Select...</option><option value="bench">Bench Press (Monday/Friday)</option><option value="squat">Squat (Wednesday)</option><option value="deadlift">Deadlift (Tuesday)</option></select>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+      <div><label>Weight (lbs)</label><input type="number" id="lift-wt" placeholder="e.g. 135"></div>
+      <div><label>Reps</label><input type="number" id="lift-rp" placeholder="e.g. 8"></div>
+      <div><label>Sets</label><input type="number" id="lift-st" placeholder="e.g. 4"></div>
+    </div>
+    <label>Bodyweight today (lbs)</label><input type="number" id="lift-bw" placeholder="e.g. 187">
+    <button class="btn btn-p" onclick="saveWorkout()">Save Workout</button>
+    <div id="lift-hist" style="font-size:12px;color:var(--tx3);margin-top:4px"></div>
+  </div>
+
+  <div class="slabel">Workout Routine</div>
+  <div id="excontainer"></div>
+
+  <div class="slabel">Personalized Meal Plan</div>
+  <div class="card">
+    <p style="font-size:13px;color:var(--tx2);margin-bottom:10px">Tell me what you don't like — I'll build a meal plan around your taste.</p>
+    <div style="display:flex;gap:8px;margin-bottom:8px"><input type="text" id="dislike-in" placeholder="e.g. tuna, broccoli..." style="margin:0;flex:1"><button class="btn btn-g" style="width:auto;padding:0 14px;margin:0" onclick="addDislike()">Add</button></div>
+    <div id="dislike-tags" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px"></div>
+    <button class="btn btn-p" onclick="genMeals()">Build My Meal Plan</button>
+    <div id="meal-result" style="display:none;margin-top:10px"></div>
+  </div>
+</div>
+
+<!-- FINANCE -->
+<div id="page-finance" class="page">
+  <div class="app-header"><h1>💰 Money</h1><div class="sub">Electric bike fund + budget</div></div>
+  <div class="card">
+    <div class="card-title">Electric Bike Fund 🚲</div>
+    <div class="stat-grid">
+      <div class="stat"><div class="slb">Saved</div><div class="sv">$<span id="fin-sv">0</span></div></div>
+      <div class="stat"><div class="slb">Remaining</div><div class="sv">$<span id="fin-rm">5000</span></div></div>
+    </div>
+    <div class="pw"><div class="pl"><span>To $5,000</span><span id="fin-pt">0%</span></div><div class="pt"><div class="pf" id="fin-pb" style="width:0%"></div></div></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px">
+      <div><label>Add earnings ($)</label><input type="number" id="fin-add" placeholder="20" style="margin:0"></div>
+      <div><label>Spent ($)</label><input type="number" id="fin-sub" placeholder="10" style="margin:0"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+      <button class="btn btn-p" style="margin:0" onclick="addMoney()">+ Add</button>
+      <button class="btn btn-g" style="margin:0" onclick="spendMoney()">− Spend</button>
+    </div>
+  </div>
+
+  <div class="slabel">Other Savings Goals</div>
+  <div id="other-goals"></div>
+  <div class="card"><div class="card-title">Add a Goal</div>
+    <input type="text" id="gn-in" placeholder="Goal name (e.g. Shoes)"><input type="number" id="gt-in" placeholder="Amount needed ($)">
+    <button class="btn btn-p" onclick="addGoal()">Add Goal</button>
+  </div>
+
+  <div class="slabel">Transactions</div>
+  <div id="txn-list" style="max-height:200px;overflow-y:auto;margin-bottom:12px"></div>
+
+  <div class="slabel">Chores for Mom 🏠</div>
+  <div class="card">
+    <div id="chores-list"></div>
+    <div style="display:flex;gap:8px"><input type="text" id="chore-in" placeholder="Add a chore..." style="margin:0;flex:1"><button class="btn btn-g" style="width:auto;padding:0 14px;margin:0" onclick="addChore()">Add</button></div>
+  </div>
+
+  <div class="slabel">Jobs That Hire at 15 — Near You</div>
+  <div class="tip-b"><strong>⚠️ Important Note About Age</strong><p>At 15½ in Arizona, you need a <strong>work permit</strong> from your school. Ask your school counselor for an "Employment Certificate." These jobs below are confirmed to hire at 15 with a permit.</p></div>
+
+  <div class="jb"><div class="jt">Bagger / Courtesy Clerk</div><div class="jc">Fry's Food Stores (Kroger) — Near 85050</div><div class="jm">📍 Multiple locations near Desert Ridge · ~$14–$15/hr · Hires at 15 with work permit · Grocery bagging, cart return, helping customers</div><a class="jl" href="https://jobs.kroger.com/frys-food-stores/go/Fry's-Food-Stores/571300/" target="_blank">Apply at Fry's →</a></div>
+
+  <div class="jb"><div class="jt">Crew Member</div><div class="jc">Burger King — 85050 Area</div><div class="jm">📍 Near Tatum & Union Hills · ~$15/hr · Some AZ franchises hire at 15 with a work permit · Call ahead to confirm</div><a class="jl" href="https://www.bk.com/careers" target="_blank">Apply at BK →</a></div>
+
+  <div class="jb"><div class="jt">Ice Cream Scooper / Cashier</div><div class="jc">Baskin-Robbins — Phoenix Area</div><div class="jm">📍 Check locations near 85050 · Hires 14–15 year olds · ~$14–$15/hr · Fun low-stress first job</div><a class="jl" href="https://www.baskinrobbins.com/en/careers.html" target="_blank">Apply at BR →</a></div>
+
+  <div class="jb"><div class="jt">All 15-Year-Old Jobs — Arizona</div><div class="jc">Snagajob — Filtered for Teens</div><div class="jm">Browse jobs that actually hire under 16. Filter by your zip code 85050.</div><a class="jl" href="https://www.snagajob.com/search/w-arizona/q-15+year+old+jobs" target="_blank">Browse All →</a></div>
+</div>
+
+<!-- SCHOOL -->
+<div id="page-school" class="page">
+  <div class="app-header"><h1>📚 School</h1><div class="sub">Soph → Junior · Algebra · Bio · Culinary · Weight Training</div></div>
+
+  <div class="slabel">Today's Lesson</div>
+  <div class="card" id="lesson-card">
+    <div style="font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--red);margin-bottom:6px;font-weight:600" id="ls-subj">Press Load</div>
+    <div style="font-size:17px;font-weight:700;margin-bottom:10px" id="ls-title">Ready when you are</div>
+    <div style="font-size:14px;color:var(--tx2);line-height:1.7" id="ls-body">Each day get a lesson from one of your classes. Read it, then answer the question.</div>
+  </div>
+  <button class="btn btn-p" onclick="loadLesson()">Load Today's Lesson</button>
+  <div id="lesson-q-area" style="display:none">
+    <div style="background:var(--bg3);border-left:3px solid var(--red);padding:12px;border-radius:0 8px 8px 0;margin:10px 0 8px;font-size:14px;font-weight:500" id="lesson-q"></div>
+    <textarea id="lesson-ans" placeholder="Type your answer..."></textarea>
+    <button class="btn btn-p" onclick="checkLessonAnswer()">Submit Answer</button>
+  </div>
+  <div id="lesson-fb" class="ar" style="display:none"><div class="art">Feedback</div><div class="arb" id="lesson-fb-txt"></div></div>
+
+  <div class="slabel">Career Exploration</div>
+  <div class="card" style="background:var(--rdim);border-color:var(--rb)">
+    <div style="font-size:15px;font-weight:600;margin-bottom:8px" id="career-q">Loading...</div>
+    <textarea id="career-ans" placeholder="Be honest — no wrong answer..."></textarea>
+    <button class="btn btn-p" onclick="saveCareer()">Save & Next Question</button>
+    <div style="font-size:12px;color:var(--tx3);margin-top:4px" id="career-hist"></div>
+  </div>
+
+  <div class="slabel">My Classes & Assignments</div>
+  <div id="classes-wrap"></div>
+
+  <div class="slabel">Study Timer & Calendar</div>
+  <div class="card">
+    <p style="font-size:13px;color:var(--tx2);margin-bottom:14px">Set a 30-minute timer. When it rings, your study session logs automatically. That's how your calendar fills in — not just clicking a button.</p>
+    <div class="timer-circle" id="timer-circle">
+      <div class="timer-num" id="timer-display">30:00</div>
+      <div class="timer-sub" id="timer-sub">Ready</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px">
+      <button class="btn btn-p" style="margin:0;padding:10px;font-size:13px" onclick="startTimer(30)">30 min</button>
+      <button class="btn btn-g" style="margin:0;padding:10px;font-size:13px" onclick="startTimer(45)">45 min</button>
+      <button class="btn btn-g" style="margin:0;padding:10px;font-size:13px" onclick="startTimer(60)">60 min</button>
+    </div>
+    <button class="btn btn-g" style="margin-bottom:14px" onclick="stopTimer()">Stop Timer</button>
+    <div style="font-size:13px;color:var(--tx2);margin-bottom:10px">Study sessions this month: <strong id="study-count" style="color:var(--rl)">0</strong></div>
+    <div class="cal-head-row" id="cal-heads" style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:3px"></div>
+    <div id="cal-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px"></div>
+    <div style="display:flex;gap:12px;margin-top:8px;font-size:12px;color:var(--tx3)"><span style="color:#4ade80">■ Studied</span><span style="color:var(--rl)">■ Today</span><span>■ Not yet</span></div>
+  </div>
+
+  <div class="slabel">Upload Assignment for Help</div>
+  <div class="card">
+    <label>Which class?</label>
+    <select id="assign-cls"><option value="Algebra 3-4">Algebra 3-4</option><option value="Biology">Biology</option><option value="Culinary">Culinary</option><option value="Weight Training">Weight Training</option><option value="Other">Other</option></select>
+    <label>What's this about? (optional)</label>
+    <input type="text" id="assign-desc" placeholder="e.g. solving equations homework">
+    <div class="uz" onclick="document.getElementById('assign-ph').click()">
+      <div style="font-size:26px;margin-bottom:6px">📝</div>
+      <div style="font-size:13px">Take photo or upload assignment</div>
+      <input type="file" id="assign-ph" accept="image/*" capture="environment" onchange="analyzeAssignment(this)">
+    </div>
+    <div id="assign-result" class="ar" style="display:none;margin-top:10px"><div class="art">Assignment Breakdown</div><div class="arb" id="assign-txt"></div></div>
+  </div>
+</div>
+
+<!-- HEALTH -->
+<div id="page-health" class="page">
+  <div class="app-header"><h1>❤️ Health</h1><div class="sub">Sleep · Water · Steps</div></div>
+  <div class="slabel">Sleep Tracker</div>
+  <div class="card">
+    <div class="tip-b" style="margin-bottom:12px"><strong>🛏️ Your Bedtimes</strong><p><strong>Weekdays (6 AM alarm):</strong> Go to bed by <strong>9:00–9:30 PM</strong> for 8.5–9 hrs of sleep.<br><strong>Weekends (9 AM alarm):</strong> Go to bed by <strong>12:00–12:30 AM</strong> for 8.5–9 hrs of sleep.<br>At 15, your body needs 8–10 hours. Less than 7 hurts your gains AND your grades.</p></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+      <div><label>Fell asleep around</label><input type="time" id="sl-start" value="23:00"></div>
+      <div><label>Woke up at</label><input type="time" id="sl-end" value="07:30"></div>
+    </div>
+    <div class="stat" style="margin-bottom:10px"><div class="slb">Duration</div><div class="sv" id="sl-dur">8.5<span class="su"> hrs</span></div></div>
+    <button class="btn btn-p" onclick="saveSleep()">Log Sleep</button>
+    <div class="slabel" style="margin-top:14px">Fall Asleep Faster</div>
+    <div class="gi"><div class="gn">📵 No phone 30 min before bed</div><div class="dt">The light from your screen tells your brain it's still daytime. Just flip it face down or put it across the room.</div></div>
+    <div class="gi"><div class="gn">❄️ Keep your room cool</div><div class="dt">Around 65–68°F. Your body lowers its temperature to fall asleep — a cool room makes this happen faster.</div></div>
+    <div class="gi"><div class="gn">🕐 Same bedtime every night</div><div class="dt">Your body clock gets programmed. If you sleep at 11pm every night, you'll start feeling tired at 11pm automatically.</div></div>
+    <div class="gi"><div class="gn">🧘 4-7-8 breathing in bed</div><div class="dt">Breathe in for 4 seconds, hold for 7, out for 8. Do this 3 times. It signals your brain to calm down. Works fast.</div></div>
+    <div class="gi"><div class="gn">🎧 Rain or brown noise</div><div class="dt">Free on YouTube or Spotify. Covers other sounds and gives your brain something boring to tune out on.</div></div>
+  </div>
+  <div class="slabel">Water Intake</div>
+  <div class="card">
+    <div class="tip-b" style="margin-bottom:12px"><strong>💧 Your daily goal: 128 oz</strong><p>That's 4 big water bottles. Try to drink 16 oz (a cup) per hour from when you wake up to early evening. On workout days add 16–24 oz more for sweat.</p></div>
+    <div class="water-wrap"><div class="water-fill" id="water-fill" style="height:0%"></div><div class="water-lbl" id="water-lbl">0 / 128 oz</div></div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:10px 0">
+      <button class="btn btn-g" style="padding:10px;font-size:12px;margin:0" onclick="addWater(8)">+8 oz</button>
+      <button class="btn btn-g" style="padding:10px;font-size:12px;margin:0" onclick="addWater(16)">+16 oz</button>
+      <button class="btn btn-g" style="padding:10px;font-size:12px;margin:0" onclick="addWater(32)">+32 oz</button>
+      <button class="btn btn-p" style="padding:10px;font-size:12px;margin:0" onclick="customWater()">Custom</button>
+    </div>
+    <input type="number" id="water-custom" placeholder="Custom oz..." style="display:none;margin-bottom:8px">
+    <div class="stat-grid"><div class="stat"><div class="slb">Drank</div><div class="sv"><span id="wd">0</span><span class="su"> oz</span></div></div><div class="stat"><div class="slb">Still Need</div><div class="sv"><span id="wn">128</span><span class="su"> oz</span></div></div></div>
+  </div>
+  <div class="slabel">Steps</div>
+  <div class="card">
+    <div class="tip-b" style="margin-bottom:12px"><strong>👟 Check your phone's step count</strong><p>iPhone: Open the Health app → tap Browse → Activity → Steps. Android: Open Google Fit or Samsung Health. Enter today's number below.</p></div>
+    <label>Today's steps (from your phone)</label>
+    <input type="number" id="steps-in" placeholder="e.g. 8432">
+    <button class="btn btn-p" onclick="saveSteps()">Log Steps</button>
+    <div class="stat-grid" style="margin-top:8px"><div class="stat"><div class="slb">Today</div><div class="sv"><span id="steps-t">—</span></div></div><div class="stat"><div class="slb">Goal</div><div class="sv">10k</div></div></div>
+  </div>
+  <div class="slabel">Weekly Averages</div>
+  <div class="card">
+    <div class="stat-grid">
+      <div class="stat"><div class="slb">Avg Sleep</div><div class="sv"><span id="avg-sl">—</span><span class="su"> hrs</span></div></div>
+      <div class="stat"><div class="slb">Avg Water</div><div class="sv"><span id="avg-wt">—</span><span class="su"> oz</span></div></div>
+      <div class="stat"><div class="slb">Avg Steps</div><div class="sv"><span id="avg-st">—</span></div></div>
+      <div class="stat"><div class="slb">Workouts</div><div class="sv"><span id="wk-wo">0</span><span class="su">/5</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- TASKS -->
+<div id="page-tasks" class="page">
+  <div class="app-header"><h1>✅ Tasks</h1><div class="sub" id="tasks-date">Today's schedule</div></div>
+  <div class="card">
+    <div class="card-title">Today's To-Do</div>
+    <div id="task-list"></div>
+    <button class="btn btn-g" style="margin-top:4px" onclick="toggleAddTask()">+ Add Task</button>
+    <div id="add-task-area" style="display:none;margin-top:10px">
+      <input type="text" id="new-task-txt" placeholder="Task description">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div><label>Time (12hr format e.g. 2:30 PM)</label><input type="text" id="new-task-time" placeholder="e.g. 3:00 PM" style="margin:0"></div>
+        <div style="display:flex;align-items:flex-end"><button class="btn btn-p" style="margin:0" onclick="addTask()">Add</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Today's Progress</div>
+    <div class="ring-progress-wrap">
+      <svg class="ring-svg" width="140" height="140" viewBox="0 0 140 140">
+        <circle class="ring-bg" cx="70" cy="70" r="54"/>
+        <circle class="ring-fill" id="ring-fill" cx="70" cy="70" r="54" stroke-dasharray="339.3" stroke-dashoffset="339.3"/>
+      </svg>
+      <div class="ring-label" id="ring-label">0 / 0</div>
+      <div class="ring-sub" id="ring-sub">tasks completed today</div>
+    </div>
+  </div>
+</div>
+
+<!-- LOVE -->
+<div id="page-love" class="page">
+  <div class="app-header"><h1>❤️ Relationship</h1><div class="sub">Be intentional. Read this every day.</div></div>
+
+  <div class="slabel">Your Daily Reminders</div>
+  <div class="love-note"><div class="love-note-ico">💭</div><div class="love-note-txt">"She doesn't need you to be perfect — she needs you to be present. When she's talking to you, put the phone down and actually look at her."</div></div>
+  <div class="love-note"><div class="love-note-ico">🎁</div><div class="love-note-txt">"The small things hit different. A random 'thinking of you' text, remembering something she mentioned last week, showing up when you said you would. That's what makes you unforgettable."</div></div>
+  <div class="love-note"><div class="love-note-ico">🌱</div><div class="love-note-txt">"Every time you work on yourself — getting fit, getting your grades right, building your goals — you're becoming a better person for both of you. That matters."</div></div>
+  <div class="love-note"><div class="love-note-ico">🔥</div><div class="love-note-txt">"Tell her something specific you like about her. Not 'you're pretty' — something real. That's what she'll think about later."</div></div>
+  <div class="love-note"><div class="love-note-ico">🤝</div><div class="love-note-txt">"Real relationships go through hard moments. Stay calm, don't say things to hurt her, and be the one who wants to fix it — not win."</div></div>
+
+  <div class="slabel">Make It Personal to You Two</div>
+  <div class="card">
+    <p style="font-size:13px;color:var(--tx2);margin-bottom:12px">Tell me about your girlfriend and I'll customize the love page just for you two — inside jokes, what she likes, how you met, all of it.</p>
+    <textarea id="gf-info" placeholder="Tell me about her — her name, what she's like, things she loves, what you do together, how you met..." style="min-height:100px"></textarea>
+    <button class="btn btn-p" onclick="personalizeRelationship()">Personalize for Us</button>
+    <div id="personalized-tips" style="display:none;margin-top:10px"></div>
+  </div>
+
+  <div class="slabel">How to Be Better Every Day</div>
+  <div class="love-tr"><div class="love-tri">👂</div><div class="love-trc"><strong>Actually listen</strong><p>Stop what you're doing. Make eye contact. Ask follow-up questions based on what she says.</p></div></div>
+  <div class="love-tr"><div class="love-tri">💬</div><div class="love-trc"><strong>Communicate when something's off</strong><p>Don't go quiet and let stuff build up. Say it calmly: "Hey, this bothered me." That's what mature couples do.</p></div></div>
+  <div class="love-tr"><div class="love-tri">🎯</div><div class="love-trc"><strong>Ask about her goals</strong><p>What does she want to do after high school? What does she care about? Be genuinely interested.</p></div></div>
+  <div class="love-tr"><div class="love-tri">😄</div><div class="love-trc"><strong>Make her laugh</strong><p>Don't take yourself so seriously. Be goofy. Laughter is underrated in a relationship.</p></div></div>
+
+  <div class="slabel">Date Ideas Near You — No Car Needed 🚶</div>
+  <div class="gi"><div class="gn">🛍️ Desert Ridge Marketplace</div><div class="dt">Walk around, window shop, grab food from one of the restaurants. It's literally nearby and free to just hang. Grab a drink from Dutch Bros and walk around together.</div></div>
+  <div class="gi"><div class="gn">🎬 Movie Night at Home</div><div class="dt">String lights, her favorite snacks, pillow fort. Zero dollars and honestly more fun than going out. Pick a movie she wants to watch, not you.</div></div>
+  <div class="gi"><div class="gn">🍦 Walk to Dutch Bros or QT</div><div class="dt">Walk to the nearest one together, grab drinks, then walk and talk. Simple, cheap, and you're moving together which is quality time.</div></div>
+  <div class="gi"><div class="gn">🏀 Courts or Park Near Home</div><div class="dt">Walk to a nearby park or basketball court. Shoot around, play HORSE, or just sit somewhere outside together. Free and easy.</div></div>
+  <div class="gi"><div class="gn">🎮 Game Night In</div><div class="dt">Card games, board games, co-op video games. Make it competitive. Loser has to do whatever the winner says (keep it fun).</div></div>
+  <div class="gi"><div class="gn">🎨 Create Something Together</div><div class="dt">Dollar Tree is walkable from Desert Ridge. Get cheap supplies — paint rocks, make a playlist for each other, draw portraits of each other badly on purpose. Stupid fun.</div></div>
+  <div class="gi"><div class="gn">🌅 Sunset Walk in the Neighborhood</div><div class="dt">Arizona sunsets actually go crazy. Walk around your neighborhood at golden hour, take photos together, talk. Free and low-key romantic.</div></div>
+  <div class="gi"><div class="gn">🍳 Cook Something Together</div><div class="dt">Pick a simple recipe, make it at your house together. Even if it goes wrong it's funny and memorable. Look up a TikTok recipe you can actually afford.</div></div>
+
+  <div class="slabel">Weekly Check-In</div>
+  <div class="card">
+    <label>What did you do for her this week?</label>
+    <textarea id="rel-did" placeholder="Surprises, time, things you said..."></textarea>
+    <label>What could you have done better?</label>
+    <textarea id="rel-imp" placeholder="What to work on next week..."></textarea>
+    <button class="btn btn-p" onclick="saveRel()">Save Reflection</button>
+  </div>
+</div>
+
+<!-- SKILLS -->
+<div id="page-skills" class="page">
+  <div class="app-header"><h1>⚡ Skills Lab</h1><div class="sub">Typing · Reading · Critical Thinking</div></div>
+  <div class="pill-tabs">
+    <div class="pill active" onclick="switchSk('typing',this)">⌨️ Typing</div>
+    <div class="pill" onclick="switchSk('reading',this)">📖 Reading</div>
+    <div class="pill" onclick="switchSk('thinking',this)">🧠 Thinking</div>
+  </div>
+
+  <!-- Typing -->
+  <div id="sk-typing">
+    <div class="card">
+      <div class="card-title">Typing Speed Test</div>
+      <div class="prompt-box" id="type-prompt">Press Start to load your passage.</div>
+      <textarea class="typing-area" id="type-in" placeholder="Type here when test begins..." disabled></textarea>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <button class="btn btn-p" style="margin:0" onclick="startTyping()">Start ⚡</button>
+        <button class="btn btn-g" style="margin:0" onclick="resetTyping()">Reset</button>
+      </div>
+      <div id="type-res" style="display:none" class="wpm-result"><div class="wpm-big" id="wpm-val">0 WPM</div><div class="wpm-lbl" id="wpm-acc">Accuracy: 0%</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Your Typing History</div>
+      <div class="stat-grid" style="margin-bottom:10px">
+        <div class="stat"><div class="slb">Best WPM</div><div class="sv" id="best-wpm">—</div></div>
+        <div class="stat"><div class="slb">Tests Done</div><div class="sv" id="tests-done">0</div></div>
+      </div>
+      <div style="font-size:12px;color:var(--tx3);margin-bottom:6px">Last 10 tests (newest right)</div>
+      <div class="mini-chart" id="type-chart"></div>
+      <div style="font-size:11px;color:var(--tx3);margin-top:4px">Sophomore goal: 45+ WPM. Adults average 40 WPM.</div>
+    </div>
+  </div>
+
+  <!-- Reading -->
+  <div id="sk-reading" style="display:none">
+    <div class="card">
+      <div class="card-title">Reading Speed Test</div>
+      <div id="read-ready" style="text-align:center;padding:20px;color:var(--tx2)"><div style="font-size:30px;margin-bottom:8px">📖</div><div style="font-size:14px">Press Start. Read as fast as you can. Hit Done when finished.</div></div>
+      <div class="prompt-box" id="read-passage" style="display:none"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">
+        <button class="btn btn-p" style="margin:0" id="read-start-btn" onclick="startReading()">Start Reading</button>
+        <button class="btn btn-g" style="margin:0;display:none" id="read-done-btn" onclick="doneReading()">Done ✓</button>
+      </div>
+      <div id="read-res" style="display:none" class="wpm-result"><div class="wpm-big" id="read-wpm">0 WPM</div><div class="wpm-lbl">Goal: 200+ WPM. Average adult: 200–250 WPM.</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Reading History</div>
+      <div class="stat-grid" style="margin-bottom:10px">
+        <div class="stat"><div class="slb">Best Speed</div><div class="sv" id="best-read">—<span class="su"> wpm</span></div></div>
+        <div class="stat"><div class="slb">Sessions</div><div class="sv" id="read-sessions">0</div></div>
+      </div>
+      <div style="font-size:12px;color:var(--tx3);margin-bottom:6px">Last 10 sessions</div>
+      <div class="mini-chart" id="read-chart"></div>
+      <button class="btn btn-g" style="margin-top:10px" onclick="resetReadBest()">Reset Best Speed</button>
+    </div>
+  </div>
+
+  <!-- Critical Thinking -->
+  <div id="sk-thinking" style="display:none">
+    <div class="card">
+      <div class="card-title">🧠 Critical Thinking</div>
+      <p style="font-size:13px;color:var(--tx2);margin-bottom:10px">A quick real-life scenario. Read it, write your honest take. No wrong answers — this builds how you think.</p>
+      <div class="tip-b" style="margin-bottom:10px"><strong>Today's Scenario</strong><p id="ct-scene">Press Load to get your scenario.</p></div>
+      <button class="btn btn-g" style="margin-bottom:8px" onclick="loadCT()">Load Scenario</button>
+      <div id="ct-q-area" style="display:none">
+        <div style="background:var(--bg3);border-left:3px solid var(--red);padding:10px;border-radius:0 8px 8px 0;margin-bottom:8px;font-size:14px;font-weight:500" id="ct-q"></div>
+        <textarea id="ct-ans" placeholder="Your honest take..."></textarea>
+        <button class="btn btn-p" onclick="submitCT()">Submit</button>
+      </div>
+      <div id="ct-fb" class="ar" style="display:none"><div class="art">Feedback</div><div class="arb" id="ct-fb-txt"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- AI CHAT -->
+<div id="page-ai" class="page">
+  <div class="app-header"><h1>🤖 AI Chat</h1><div class="sub">Knows your goals, data & life — ask anything</div></div>
+
+  <div class="card" style="padding:14px">
+    <div class="chat-wrap" id="chat-wrap">
+      <div class="msg msg-ai">Hey Orion! I'm your personal AI. I know your goals — weight loss to 162.5 lbs, saving $5k for an electric bike, getting stronger at LA Fitness, perfect GPA. Ask me anything about workouts, food, school, money, or life. What's up?</div>
+    </div>
+    <div class="chat-input-row">
+      <input type="text" id="chat-in" placeholder="Ask me anything..." onkeypress="if(event.key==='Enter')sendChat()">
+      <button class="btn btn-p" style="width:auto;padding:0 20px;margin:0;min-height:52px" onclick="sendChat()">Send</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<div class="nav">
+  <div class="ni active" onclick="showPage('home',this)"><span class="nic">🏠</span>Home</div>
+  <div class="ni" onclick="showPage('fitness',this)"><span class="nic">💪</span>Fitness</div>
+  <div class="ni" onclick="showPage('finance',this)"><span class="nic">💰</span>Money</div>
+  <div class="ni" onclick="showPage('school',this)"><span class="nic">📚</span>School</div>
+  <div class="ni" onclick="showPage('health',this)"><span class="nic">❤️</span>Health</div>
+  <div class="ni" onclick="showPage('tasks',this)"><span class="nic">✅</span>Tasks</div>
+  <div class="ni" onclick="showPage('love',this)"><span class="nic">💜</span>Love</div>
+  <div class="ni" onclick="showPage('skills',this)"><span class="nic">⚡</span>Skills</div>
+  <div class="ni" onclick="showPage('ai',this)"><span class="nic">🤖</span>AI</div>
+</div>
+
+<!-- Safari Install Modal -->
+<div class="safari-modal" id="safari-modal" onclick="if(event.target===this)closeSafariModal()">
+  <div class="safari-modal-box">
+    <div class="safari-modal-title">📲 Add Orion's App to Your Phone</div>
+    <div class="safari-step">
+      <div class="safari-step-num">1</div>
+      <div class="safari-step-text"><strong>Download this file</strong> — tap the download button above this app window and save it to your phone's Files app</div>
+    </div>
+    <div class="safari-step">
+      <div class="safari-step-num">2</div>
+      <div class="safari-step-text"><strong>Open the Files app</strong> on your iPhone — find the file called <strong>orions-app-v5.html</strong> in Downloads</div>
+    </div>
+    <div class="safari-step">
+      <div class="safari-step-num">3</div>
+      <div class="safari-step-text"><strong>Tap the file</strong> — it will open in Safari automatically</div>
+    </div>
+    <div class="safari-step">
+      <div class="safari-step-num">4</div>
+      <div class="safari-step-text"><strong>In Safari</strong> — tap the <strong>Share button ↑</strong> at the bottom of the screen</div>
+    </div>
+    <div class="safari-step">
+      <div class="safari-step-num">5</div>
+      <div class="safari-step-text">Scroll down and tap <strong>"Add to Home Screen"</strong> → tap <strong>Add</strong> in the top right</div>
+    </div>
+    <div class="safari-step">
+      <div class="safari-step-num">6</div>
+      <div class="safari-step-text">✅ Done — <strong>Orion's App</strong> now lives on your home screen like a real app!</div>
+    </div>
+    <button onclick="closeSafariModal()" style="margin-top:20px;width:100%;padding:16px;background:var(--red);color:white;border:none;border-radius:12px;font-size:16px;font-weight:700;font-family:Inter,sans-serif;cursor:pointer">Got it!</button>
+  </div>
+</div>
+
+<script>
+const S={g:(k,d)=>{try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):d}catch{return d}},s:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
+
+// NAV
+function showPage(id,el){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));document.getElementById('page-'+id).classList.add('active');if(el)el.classList.add('active');window.scrollTo(0,0);}
+
+// OPEN IN SAFARI — shows step-by-step modal since app runs inside Claude viewer
+function openInSafari(){
+  const modal=document.getElementById('safari-modal');
+  if(modal)modal.style.display='flex';
+}
+function closeSafariModal(){
+  const modal=document.getElementById('safari-modal');
+  if(modal)modal.style.display='none';
+}
+
+// COUNTDOWN
+const TARGET=new Date('2026-08-25T00:00:00');
+function updateCountdown(){const now=new Date();const days=Math.max(0,Math.ceil((TARGET-now)/86400000));document.getElementById('countdown-text').textContent=`${days} days until your birthday goal 🎂`;const h=now.getHours();const gr=h<12?'Good morning':h<17?'Good afternoon':'Good evening';document.getElementById('home-greeting').textContent=`${gr}, Orion`;document.getElementById('tasks-date').textContent=now.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});}
+updateCountdown();
+
+// WEATHER — fetches via Anthropic API to bypass CORS, refreshes every 10 min
+// TIPS
+const tips=['Use lighter weight (135–145 lbs bench) and do MORE reps. Your strength goes up faster that way.','Drink 16 oz of water right when you wake up. You\'ve been asleep for hours without any.','One job application today. Just one. The hardest part is starting.','Review your class notes for 10 minutes before bed tonight.','Tell your girlfriend one specific thing you appreciate about her today.','Sleep is literally when your muscles grow. 8–10 hours tonight is not optional.','Protein builds muscle. Get 3–4 high-protein meals in today.','Take a progress photo even if you don\'t feel like it. You\'ll want that comparison later.','A clean space helps your mind feel less cluttered. 5 minutes tidying before bed.','Check in on your mom. Ask if she needs help with anything around the house.'];
+document.getElementById('tip-text').textContent=tips[Math.abs(Math.floor((new Date()-new Date(2026,0,1))/86400000))%tips.length];
+
+// AI call
+async function toB64(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=rej;r.readAsDataURL(file);})}
+async function claude(messages,maxT=1200){const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:maxT,messages})});const d=await r.json();return d.content?.map(c=>c.text||'').join('')||'';}
+
+// HOME PROGRESS
+function updateHome(){
+  const wt=S.g('weight',189.9);const sv=S.g('savings',0);const wo=S.g('workouts_week',[]);const water=S.g('water_today',0);const steps=S.g('steps_today',null);
+  document.getElementById('h-weight').innerHTML=`${wt}<span class="su"> lbs</span>`;
+  document.getElementById('h-save').textContent=Math.ceil(Math.max(0,5000-sv)/Math.max(1,Math.ceil((TARGET-new Date())/86400000)));
+  document.getElementById('h-water').innerHTML=`${Math.max(0,128-water)}<span class="su"> oz</span>`;
+  document.getElementById('h-steps').textContent=steps?steps.toLocaleString():'—';
+  const wL=189.9-wt,wP=Math.max(0,Math.round((wL/(189.9-162.5))*100));
+  document.getElementById('pw-b').style.width=wP+'%';document.getElementById('pw-t').textContent=wP+'%';
+  const sP=Math.round(Math.min(100,(sv/5000)*100));
+  document.getElementById('ps-b').style.width=sP+'%';document.getElementById('ps-t').textContent=sP+'%';
+  const woP=Math.round(Math.min(100,(wo.length/5)*100));
+  document.getElementById('po-b').style.width=woP+'%';document.getElementById('po-t').textContent=wo.length+'/5';
+  const wtP=Math.round(Math.min(100,(water/128)*100));
+  document.getElementById('pwt-b').style.width=wtP+'%';document.getElementById('pwt-t').textContent=water+' oz';
+}
+updateHome();
+
+// PROGRESS PHOTOS
+async function analyzeProgressPhoto(input){
+  if(!input.files[0])return;
+  const file=input.files[0];const b64=await toB64(file);
+  const src=`data:${file.type};base64,${b64}`;
+  document.getElementById('photo-preview-wrap').style.display='block';
+  document.getElementById('photo-preview-wrap').innerHTML=`<img src="${src}" style="width:100%;border-radius:10px;max-height:250px;object-fit:cover">`;
+  const rd=document.getElementById('photo-result');const rt=document.getElementById('photo-result-text');
+  rd.style.display='block';rt.innerHTML='<span class="spinner"></span> Analyzing...';
+  try{
+    const txt=await claude([{role:'user',content:[{type:'image',source:{type:'base64',media_type:file.type,data:b64}},{type:'text',text:`This is a progress photo from Orion, a 15-year-old male. He's going from 189.9 lbs to 162.5 lbs by Aug 25 2026, building muscle at LA Fitness 5 days/week doing push/pull/legs. If it's a scale: read the number and tell him if he's on track. For a body photo: 1) What looks good or is improving, 2) The #1 thing to change/focus on FIRST, 3) The #2 thing after that, 4) One thing he can do TODAY to improve. Honest but encouraging. Simple words, no jargon. 4–6 sentences max.`}]}]);
+    rt.textContent=txt;
+    // Save photo to history
+    const photos=S.g('progress_photos',[]);photos.push({src,date:new Date().toLocaleDateString(),analysis:txt});if(photos.length>20)photos.shift();S.s('progress_photos',photos);
+    renderPhotoHistory();
+  }catch(e){rt.textContent='Could not analyze. Check your internet connection.';}
+}
+function renderPhotoHistory(){
+  const photos=S.g('progress_photos',[]);const sec=document.getElementById('photo-history-section');const grid=document.getElementById('photo-grid');
+  if(!photos.length){sec.style.display='none';return;}
+  sec.style.display='block';
+  grid.innerHTML=photos.slice(-9).reverse().map(p=>`<div class="photo-thumb-wrap"><img class="photo-thumb" src="${p.src}" onclick="showPhotoFull('${encodeURIComponent(p.src)}','${encodeURIComponent(p.date)}','${encodeURIComponent(p.analysis||'')}')"><div class="photo-date">${p.date}</div></div>`).join('');
+}
+function showPhotoFull(src,date,analysis){alert(`📅 ${decodeURIComponent(date)}\n\n${decodeURIComponent(analysis)}`);}
+renderPhotoHistory();
+
+// FACE ANALYSIS
+async function analyzeFace(input){
+  if(!input.files[0])return;
+  const file=input.files[0];const b64=await toB64(file);
+  const rd=document.getElementById('face-result');const rt=document.getElementById('face-result-text');
+  rd.style.display='block';rt.innerHTML='<span class="spinner"></span> Analyzing your face...';
+  try{
+    const txt=await claude([{role:'user',content:[{type:'image',source:{type:'base64',media_type:file.type,data:b64}},{type:'text',text:`This is a selfie from Orion, a 15-year-old guy. Give him an honest, helpful face analysis. Look at and comment on: skin (pimples, oiliness, texture, redness), face structure/shape, any puffiness or bloating, under-eye bags/darkness, hair and hairline, eyebrows, nose shape, lips, jaw definition, and overall appearance. For EACH thing you notice, give him one simple, cheap thing he can do to improve it (skincare routine, sleep, water, diet, haircut style suggestion, etc). Be direct but kind — like a trusted older friend, not a doctor. No medical language. Keep each point short and practical. Orion is 15 so keep it age-appropriate.`}]}]);
+    rt.textContent=txt;
+  }catch(e){rt.textContent='Could not analyze. Make sure you have internet and try again.';}
+}
+
+// FITNESS
+const exData=[
+  {day:'Monday — Push (Chest, Shoulders, Triceps)',exercises:[
+    {n:'Bench Press',s:'4 sets of 8–10 reps at 135–145 lbs',t:'Lie flat on the bench. Grip the bar just wider than your shoulders. Lower it to your chest — touch, don\'t bounce — then push it back up. Keep your feet flat on the floor.',img:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Bench_press_2.jpg/320px-Bench_press_2.jpg'},
+    {n:'Incline Dumbbell Press',s:'3 sets of 10–12 reps',t:'Set the bench to about a 45-degree angle. Hold a dumbbell in each hand at your chest and push them straight up. This hits the upper part of your chest.',img:''},
+    {n:'Shoulder Press Machine',s:'3 sets of 10–12 reps',t:'Sit in the seat, grab the handles at shoulder height, and push straight up. Don\'t lock your elbows — stop just before fully straight.',img:''},
+    {n:'Lateral Raises',s:'3 sets of 12–15 reps (light weight — 10–15 lbs)',t:'Hold light dumbbells at your sides. Raise your arms out to the sides until they\'re level with your shoulders — like a T shape. Lower slowly.',img:''},
+    {n:'Tricep Pushdowns',s:'3 sets of 12–15 reps',t:'Stand in front of the cable machine. Grab the bar with both hands, keep your elbows locked at your sides, and push down until your arms are straight. Bring back up slowly.',img:''},
+  ]},
+  {day:'Tuesday — Pull (Back & Biceps)',exercises:[
+    {n:'Deadlift',s:'4 sets of 6–8 reps at 155–175 lbs',t:'Stand with your feet shoulder-width apart and the bar over the middle of your feet. Bend down, grip the bar, keep your back flat and straight, then stand up by pushing through your legs like you\'re pushing the floor down. Don\'t round your back.',img:''},
+    {n:'Lat Pulldown',s:'3 sets of 8–12 reps',t:'Sit at the machine and grip the bar wide. Pull it down to your upper chest. Think about pulling your elbows down toward your hips — that\'s what works your back.',img:''},
+    {n:'Barbell Rows',s:'3 sets of 8–10 reps at 95–115 lbs',t:'Hold the barbell, lean forward a little, and pull the bar up to your belly button. Keep your back flat. Squeeze your shoulder blades together at the top.',img:''},
+    {n:'Face Pulls',s:'3 sets of 12–15 reps',t:'Use the cable machine at face height with a rope. Pull the rope toward your face, spreading it apart as you do. Your elbows should flare out like wings. This keeps your shoulders healthy.',img:''},
+    {n:'Barbell Curls',s:'3 sets of 10–12 reps',t:'Stand holding the bar with both hands. Curl it up toward your shoulders by bending at the elbow — don\'t swing your whole body. Lower it back down slowly.',img:''},
+  ]},
+  {day:'Wednesday — Legs',exercises:[
+    {n:'Squats',s:'4 sets of 8–10 reps at 185–200 lbs',t:'Put the bar on your shoulders. Feet shoulder-width apart, toes slightly out. Sit down like you\'re going to sit in a chair — go until your hips are level with your knees — then stand back up.',img:''},
+    {n:'Romanian Deadlifts',s:'3 sets of 10–12 reps at 115–135 lbs',t:'Hold the bar in front of you. Push your hips backward (like closing a door with your butt) while the bar slides down your legs. You\'ll feel a pull in the back of your legs. Come back up.',img:''},
+    {n:'Leg Press',s:'3 sets of 12–15 reps',t:'Sit in the machine, put both feet in the middle of the platform. Push the weight away, then let it come back down slowly. Don\'t fully straighten your knees at the top.',img:''},
+    {n:'Leg Curls',s:'3 sets of 12–15 reps',t:'Lie on the machine face down and hook your legs under the pad. Curl your feet up toward your butt, then lower slowly. You\'ll feel this in the back of your thighs.',img:''},
+    {n:'Calf Raises',s:'4 sets of 20 reps',t:'Stand with your toes on the edge of a step. Rise up on your toes as high as you can, then lower your heel below the step for a full stretch. Slow the whole way.',img:''},
+  ]},
+  {day:'Thursday — Rest & Recovery',exercises:[
+    {n:'Light Walk or Bike',s:'20–30 minutes',t:'Moving on rest days helps your muscles recover faster. You\'ll feel less sore tomorrow.',img:''},
+    {n:'Stretching',s:'10–15 minutes',t:'Stretch your chest, hip flexors, and hamstrings. Hold each stretch 30 seconds. This improves flexibility and reduces soreness.',img:''},
+    {n:'Eat Enough Protein',s:'All day',t:'Rest days are when muscles actually rebuild. Make sure you\'re eating eggs, chicken, Greek yogurt, or any protein source.',img:''},
+    {n:'Cold Shower',s:'2–3 minutes at the end',t:'Switching the shower to cold for the last 2 minutes reduces inflammation and speeds up how fast your muscles recover.',img:''},
+  ]},
+  {day:'Friday — Power Upper',exercises:[
+    {n:'Bench Press — Heavy',s:'5 sets of 5 reps (heavier than Monday)',t:'Use a weight you can barely finish 5 reps with. Rest 3 full minutes between sets. This is your main strength-builder for the week.',img:''},
+    {n:'Barbell Rows — Heavy',s:'5 sets of 5 reps',t:'Match the intensity of your bench. A strong back keeps your shoulders healthy and balanced.',img:''},
+    {n:'Overhead Press',s:'4 sets of 6–8 reps',t:'Hold the bar at your shoulders and press it straight up overhead. Tighten your stomach so your lower back doesn\'t arch.',img:''},
+    {n:'Dips',s:'3 sets of 8–10 reps',t:'Use the dip bars. Lower yourself until your elbows hit 90 degrees, then push back up. If there\'s an assistance machine, use it — nothing wrong with that.',img:''},
+  ]},
+  {day:'Saturday — Active & Fun',exercises:[
+    {n:'Basketball',s:'Pick-up game or solo',t:'Burns 400–600 calories/hr and doesn\'t feel like a workout. Look for courts near Desert Ridge.',img:''},
+    {n:'Swim at LA Fitness',s:'30–60 minutes',t:'Your membership likely includes the pool. Full body, zero impact on your joints, great for recovery.',img:''},
+    {n:'Bike Ride',s:'Any distance',t:'Gets your steps in and gives you fresh air. Great practice for when you get the electric bike.',img:''},
+    {n:'Any Sport You Enjoy',s:'Just move',t:'Skating, football in the yard, volleyball — it all counts. The goal is not sitting all day.',img:''},
+  ]},
+  {day:'Sunday — Full Rest',exercises:[
+    {n:'Meal Prep',s:'Once-a-week habit',t:'Cook your rice and chicken for the week. Saves money and makes sure you eat right all week without thinking.',img:''},
+    {n:'Plan Your Week',s:'10 minutes',t:'Look at upcoming workouts, assignments due, and tasks. Going in with a plan = way less stress.',img:''},
+    {n:'Full Rest',s:'All day',t:'Your muscles grow while you rest. Take Sunday seriously. Sleep in if you can.',img:''},
+  ]}
+];
+
+function buildExercises(){
+  const c=document.getElementById('excontainer');
+  c.innerHTML=exData.map((day,di)=>`
+    <div class="wb">
+      <div class="wbh" onclick="toggleWB(${di})"><span class="wbht">${day.day}</span><span class="wba" id="wba${di}">▼</span></div>
+      <div class="wbb" id="wbb${di}">
+        ${day.exercises.map(ex=>`
+          <div class="ex">
+            <div class="exn">${ex.n}</div>
+            <div class="exs">${ex.s}</div>
+            <div class="ext">${ex.t}</div>
+            ${ex.img?`<img class="eximg" src="${ex.img}" alt="${ex.n}" onerror="this.style.display='none'">`:``}
+          </div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+buildExercises();
+function toggleWB(i){const b=document.getElementById('wbb'+i);const a=document.getElementById('wba'+i);b.classList.toggle('open');a.classList.toggle('open');}
+
+function saveWorkout(){
+  const type=document.getElementById('lift-type').value;const wt=parseFloat(document.getElementById('lift-wt').value);const rp=parseInt(document.getElementById('lift-rp').value);const st=parseInt(document.getElementById('lift-st').value);const bw=parseFloat(document.getElementById('lift-bw').value);
+  if(!type||!wt||!rp)return alert('Select exercise, weight, and reps.');
+  const log=S.g('lift_log',[]);log.push({date:new Date().toISOString(),type,wt,rp,sets:st||1,bw:bw||null});S.s('lift_log',log);
+  if(bw){S.s('weight',bw);updateHome();}
+  if(type==='bench')S.s('bench',wt);if(type==='squat')S.s('squat',wt);if(type==='deadlift')S.s('dead',wt);
+  const wo=S.g('workouts_week',[]);const today=new Date().toDateString();if(!wo.find(w=>new Date(w).toDateString()===today)){wo.push(new Date().toISOString());S.s('workouts_week',wo);}
+  updateFitness();updateHome();
+  document.getElementById('lift-type').value='';document.getElementById('lift-wt').value='';document.getElementById('lift-rp').value='';document.getElementById('lift-st').value='';document.getElementById('lift-bw').value='';
+  const hist=S.g('lift_log',[]).slice(-5).reverse().map(l=>`${l.type}: ${l.wt}lbs×${l.rp}`).join(' · ');
+  document.getElementById('lift-hist').textContent='Recent: '+hist;
+  alert('Workout saved!');
+}
+function updateFitness(){
+  const bench=S.g('bench',180),squat=S.g('squat',255),dead=S.g('dead',225);
+  document.getElementById('bp-b').style.width=Math.round(((bench-180)/(225-180))*100)+'%';
+  document.getElementById('sq-b').style.width=Math.round(((squat-255)/(295-255))*100)+'%';
+  document.getElementById('dl-b').style.width=Math.round(((dead-225)/(275-225))*100)+'%';
+  document.getElementById('bp-t').textContent=`Logged: ${bench} lbs`;document.getElementById('sq-t').textContent=`Logged: ${squat} lbs`;document.getElementById('dl-t').textContent=`Logged: ${dead} lbs`;
+  document.getElementById('wk-wo').textContent=S.g('workouts_week',[]).length;
+}
+updateFitness();
+
+// Meals
+function addDislike(){const v=document.getElementById('dislike-in').value.trim().toLowerCase();if(!v)return;const d=S.g('dislikes',[]);if(!d.includes(v)){d.push(v);S.s('dislikes',d);}document.getElementById('dislike-in').value='';renderDislikes();}
+function removeDislike(d){S.s('dislikes',S.g('dislikes',[]).filter(x=>x!==d));renderDislikes();}
+function renderDislikes(){const d=S.g('dislikes',[]);document.getElementById('dislike-tags').innerHTML=d.map(x=>`<span style="background:var(--rdim);border:1px solid var(--rb);color:var(--rl);padding:4px 10px;border-radius:20px;font-size:12px;cursor:pointer" onclick="removeDislike('${x}')">${x} ✕</span>`).join('');}
+renderDislikes();
+async function genMeals(){
+  const d=S.g('dislikes',[]);const r=document.getElementById('meal-result');r.style.display='block';r.innerHTML='<div style="color:var(--tx2);font-size:13px"><span class="spinner"></span> Building your meal plan...</div>';
+  try{const txt=await claude([{role:'user',content:`Create a daily meal plan for Orion, a 15-year-old guy losing fat (189.9→162.5 lbs) while building muscle at LA Fitness. Needs: high protein, cheap ingredients, easy enough for a teenager to make alone. Dislikes (exclude these): ${d.length?d.join(', '):'none'}. Format: Breakfast, Morning Snack, Lunch, Afternoon Snack, Dinner, Evening Snack. For each: meal name + ingredients + simple step-by-step cooking instructions + approx cost + protein grams. Keep instructions simple — like explaining to someone who barely cooks.`}]);
+    r.innerHTML=`<div class="ar"><div class="art">Your Meal Plan</div><div class="arb">${txt}</div></div>`;
+  }catch(e){r.innerHTML='<div style="color:var(--tx3);font-size:13px">Could not load. Check internet.</div>';}
+}
+
+// FINANCE
+function updateFinance(){const sv=S.g('savings',0);const rm=Math.max(0,5000-sv);const pct=Math.round(Math.min(100,(sv/5000)*100));document.getElementById('fin-sv').textContent=Math.round(sv);document.getElementById('fin-rm').textContent=Math.round(rm);document.getElementById('fin-pb').style.width=pct+'%';document.getElementById('fin-pt').textContent=pct+'%';updateHome();renderTxns();renderOtherGoals();}
+function addMoney(){const a=parseFloat(document.getElementById('fin-add').value);if(!a||a<=0)return alert('Enter amount.');S.s('savings',S.g('savings',0)+a);const t=S.g('txns',[]);t.push({type:'add',amt:a,date:new Date().toLocaleDateString()});S.s('txns',t);document.getElementById('fin-add').value='';updateFinance();}
+function spendMoney(){const a=parseFloat(document.getElementById('fin-sub').value);if(!a||a<=0)return alert('Enter amount.');S.s('savings',Math.max(0,S.g('savings',0)-a));const t=S.g('txns',[]);t.push({type:'sub',amt:a,date:new Date().toLocaleDateString()});S.s('txns',t);document.getElementById('fin-sub').value='';updateFinance();}
+function renderTxns(){const t=S.g('txns',[]).slice(-10).reverse();const el=document.getElementById('txn-list');if(!t.length){el.innerHTML='<div style="font-size:13px;color:var(--tx3);padding:8px">No transactions yet.</div>';return;}el.innerHTML=t.map(x=>`<div class="exp-i"><span class="exp-n">${x.type==='add'?'Earned':'Spent'} — ${x.date}</span><span class="exp-a ${x.type==='add'?'pos':'neg'}">${x.type==='add'?'+':'-'}$${x.amt.toFixed(0)}</span></div>`).join('');}
+function addGoal(){const n=document.getElementById('gn-in').value.trim();const t=parseFloat(document.getElementById('gt-in').value);if(!n||!t)return;const g=S.g('other_goals',[]);g.push({id:Date.now(),name:n,target:t,saved:0});S.s('other_goals',g);document.getElementById('gn-in').value='';document.getElementById('gt-in').value='';renderOtherGoals();}
+function renderOtherGoals(){const g=S.g('other_goals',[]);const el=document.getElementById('other-goals');if(!g.length){el.innerHTML='<div style="font-size:13px;color:var(--tx3);margin-bottom:8px">No extra goals yet.</div>';return;}el.innerHTML=g.map(x=>{const p=Math.round(Math.min(100,(x.saved/x.target)*100));return`<div class="gi"><div class="gr"><span class="gn">${x.name}</span><span class="badge">$${x.saved}/$${x.target}</span></div><div class="pw"><div class="pt"><div class="pf" style="width:${p}%"></div></div></div><div style="display:flex;gap:6px;margin-top:8px"><input type="number" placeholder="Add $" id="og${x.id}" style="flex:1;padding:8px;font-size:12px;margin:0"><button class="btn btn-g" style="width:auto;padding:0 10px;margin:0;font-size:12px" onclick="addToGoal(${x.id})">Add</button><button class="btn btn-g" style="width:auto;padding:0 10px;margin:0;font-size:12px;color:#f87171" onclick="delGoal(${x.id})">✕</button></div></div>`;}).join('');}
+function addToGoal(id){const a=parseFloat(document.getElementById('og'+id)?.value)||0;if(!a)return;const g=S.g('other_goals',[]);const x=g.find(y=>y.id===id);if(x)x.saved=Math.min(x.target,x.saved+a);S.s('other_goals',g);renderOtherGoals();}
+function delGoal(id){S.s('other_goals',S.g('other_goals',[]).filter(g=>g.id!==id));renderOtherGoals();}
+updateFinance();
+
+const defaultChores=['Take out the trash','Wash the dishes','Vacuum living room','Wipe kitchen counters','Do your own laundry','Clean your bathroom'];
+function renderChores(){const c=S.g('chores',defaultChores.map((t,i)=>({id:i,text:t,done:false})));document.getElementById('chores-list').innerHTML=c.map(x=>`<div class="ci ${x.done?'done':''}"><div class="cb ${x.done?'on':''}" onclick="toggleChore(${x.id})"></div><span class="cit">${x.text}</span><span class="exp-del" onclick="delChore(${x.id})">✕</span></div>`).join('');}
+function toggleChore(id){const c=S.g('chores',[]);const x=c.find(y=>y.id===id);if(x)x.done=!x.done;S.s('chores',c);renderChores();}
+function delChore(id){S.s('chores',S.g('chores',[]).filter(c=>c.id!==id));renderChores();}
+function addChore(){const t=document.getElementById('chore-in').value.trim();if(!t)return;const c=S.g('chores',[]);c.push({id:Date.now(),text:t,done:false});S.s('chores',c);document.getElementById('chore-in').value='';renderChores();}
+renderChores();
+
+// SCHOOL — LESSONS
+const lessons=[
+  {subj:'ALGEBRA 3-4',title:'What is a Function?',body:'A function is a math rule. You put a number in, and one specific number comes out. When you see f(x) = 2x + 3, it means: whatever x is, multiply by 2, then add 3. So f(4) = 2×4 + 3 = 11. The rule is: every input gets exactly ONE output. You\'ll see functions all the time in Algebra 3–4.',q:'If f(x) = 3x − 5, what is f(2)? Show your steps.'},
+  {subj:'BIOLOGY',title:'How Your Muscles Grow',body:'When you lift weights, you create tiny tears in your muscle fibers. Your body repairs those tears while you sleep — and makes them thicker and stronger than before. That process is called muscle hypertrophy. This is why sleep and protein matter: your body needs both to do the repairs. Protein gives the building material, sleep is when the construction happens.',q:'Why do your muscles get sore after a hard workout? What is happening in your body?'},
+  {subj:'CULINARY',title:'Knife Safety & Basic Cuts',body:'The most important knife rule: use the "claw grip." Curl your fingers so your knuckles are forward and fingertips are tucked back. The knife rides along your knuckles — so even if it slips, it hits knuckle, not fingertip. Three cuts to know: Dice (small cubes), Julienne (thin strips like matchsticks), Chiffonade (thin ribbons, usually for herbs).',q:'What is the claw grip and why is it important? Describe it like you\'re teaching someone.'},
+  {subj:'ALGEBRA 3-4',title:'Slope — What It Actually Means',body:'The equation y = mx + b is one of the most used in math. m is the slope (how steep the line is). b is where the line starts on the y-axis. Slope = rise ÷ run. If slope is 3, that means for every 1 step to the right, the line goes up 3. A positive slope goes up. A negative slope goes down. A slope of 0 is flat.',q:'In y = 4x − 2, what is the slope and what does it mean in plain words?'},
+  {subj:'BIOLOGY',title:'DNA — The Blueprint Inside You',body:'DNA is inside almost every cell of your body. It contains all the instructions for building proteins, which do basically everything — grow muscle, fight infection, digest food. DNA is made of 4 "letters": A, T, G, and C. A always pairs with T, and G always pairs with C. The order of these letters is your genetic code — it\'s what makes you you.',q:'What does DNA do in the body? What are the 4 bases and which ones pair together?'},
+  {subj:'WEIGHT TRAINING',title:'Progressive Overload — The Real Secret',body:'Progressive overload = doing a little more over time. That\'s literally the whole secret to getting stronger. Your muscles adapt to stress — if the stress never changes, they stop adapting. So you add a little more weight, or more reps, or one more set over time. You don\'t have to increase every session — every 1–2 weeks is enough. Tracking your numbers lets you know if it\'s actually working.',q:'What is progressive overload and give one example of how to use it in your workouts?'},
+  {subj:'ALGEBRA 3-4',title:'The Quadratic Formula',body:'When you have ax² + bx + c = 0, use the quadratic formula: x = (−b ± √(b²−4ac)) / 2a. It looks scary but you\'re just plugging numbers in. Example: x² + 5x + 6 = 0. a=1, b=5, c=6. Plug in: x = (−5 ± √(25−24)) / 2 = (−5 ± 1) / 2. So x = −2 or x = −3.',q:'Solve x² + 3x − 4 = 0 using the quadratic formula. Show every step.'},
+  {subj:'CULINARY',title:'Food Safety & Temperature',body:'Food safety matters because bacteria multiply fast in the "danger zone" — between 40°F and 140°F. That\'s why you keep cold food cold (below 40°F) and hot food hot (above 140°F). Raw chicken and meat need to reach 165°F internal temperature to be safe to eat. Use a food thermometer — don\'t guess. Wash your hands before and after touching raw meat.',q:'What is the temperature danger zone and why does it matter? What temp does chicken need to reach?'},
+];
+let lIdx=S.g('lessonIdx',0);
+function loadLesson(){const l=lessons[lIdx%lessons.length];document.getElementById('ls-subj').textContent=l.subj;document.getElementById('ls-title').textContent=l.title;document.getElementById('ls-body').textContent=l.body;document.getElementById('lesson-q').textContent=l.q;document.getElementById('lesson-q-area').style.display='block';document.getElementById('lesson-fb').style.display='none';document.getElementById('lesson-ans').value='';lIdx++;S.s('lessonIdx',lIdx);}
+async function checkLessonAnswer(){
+  const ans=document.getElementById('lesson-ans').value.trim();if(!ans)return alert('Write your answer first!');
+  const l=lessons[(lIdx-1)%lessons.length];const fb=document.getElementById('lesson-fb');const fbt=document.getElementById('lesson-fb-txt');fb.style.display='block';fbt.innerHTML='<span class="spinner"></span> Checking...';
+  try{const txt=await claude([{role:'user',content:`Orion is a 15-year-old sophomore. He just read this lesson:\nSubject: ${l.subj}\nLesson: ${l.title}\nContent: ${l.body}\nQuestion: "${l.q}"\nHis answer: "${ans}"\n\nGive him: 1) If he's right, partially right, or off. 2) The correct answer explained simply. 3) One tip to remember it. Keep it short — 3–5 sentences max. Friendly, simple language.`}]);fbt.textContent=txt;}catch(e){fbt.textContent='Could not check. Try again.';}
+}
+
+// Career
+const cQs=['What subjects do you enjoy most in school and why?','What do you do in your free time that you could do for hours without getting bored?','What jobs have you seen adults do that looked cool or interesting?','Do you prefer working with people, by yourself, or a mix?','If you could solve one problem in the world, what would it be?','Are you more creative, logical, or hands-on?','What would you teach someone if you had to teach for one hour?','Is college something you\'re thinking about? What might you want to study?','What do you think comes naturally to you that others struggle with?','What kind of lifestyle do you want when you\'re 25?'];
+let cIdx=S.g('career_idx',0);
+function loadCareerQ(){document.getElementById('career-q').textContent=cQs[cIdx%cQs.length];const tot=S.g('career_log',[]).length;document.getElementById('career-hist').textContent=tot>0?`${tot} answers saved — your profile is building over time.`:'';}
+function saveCareer(){const ans=document.getElementById('career-ans').value.trim();if(!ans)return alert('Write your thoughts!');const log=S.g('career_log',[]);log.push({q:cQs[cIdx%cQs.length],a:ans,date:new Date().toISOString()});S.s('career_log',log);cIdx++;S.s('career_idx',cIdx);document.getElementById('career-ans').value='';loadCareerQ();}
+loadCareerQ();
+
+// Classes
+const CLASSES=[{id:'algebra',name:'Algebra 3-4'},{id:'bio',name:'Biology'},{id:'culinary',name:'Culinary'},{id:'wt',name:'Weight Training'}];
+function buildClasses(){const c=document.getElementById('classes-wrap');c.innerHTML=CLASSES.map(cls=>{const asgn=S.g('asgn_'+cls.id,[]);const pend=asgn.filter(a=>!a.done).length;return`<div class="cls-card"><div class="cls-head" onclick="toggleCls('${cls.id}')"><span class="cls-name">${cls.name}</span><span class="cls-cnt">${pend} pending</span></div><div class="cls-body" id="cls-${cls.id}"><div id="al-${cls.id}"></div><div style="display:flex;gap:6px;margin-top:6px"><input type="text" placeholder="Add assignment..." id="ai-${cls.id}" style="margin:0;flex:1;padding:10px;font-size:13px"><button class="btn btn-g" style="width:auto;padding:0 12px;margin:0;font-size:12px" onclick="addAsgn('${cls.id}')">Add</button></div></div></div>`;}).join('');CLASSES.forEach(cls=>renderAsgn(cls.id));}
+function toggleCls(id){document.getElementById('cls-'+id).classList.toggle('open');}
+function renderAsgn(id){const a=S.g('asgn_'+id,[]);const el=document.getElementById('al-'+id);if(!el)return;if(!a.length){el.innerHTML='<div style="font-size:12px;color:var(--tx3);padding:6px 0">No assignments. Add below.</div>';return;}el.innerHTML=a.map(x=>`<div class="ci ${x.done?'done':''}"><div class="cb ${x.done?'on':''}" onclick="toggleAsgn('${id}',${x.id})"></div><span class="cit" style="font-size:13px">${x.text}</span><span class="exp-del" onclick="delAsgn('${id}',${x.id})">✕</span></div>`).join('');}
+function addAsgn(id){const t=document.getElementById('ai-'+id).value.trim();if(!t)return;const a=S.g('asgn_'+id,[]);a.push({id:Date.now(),text:t,done:false});S.s('asgn_'+id,a);document.getElementById('ai-'+id).value='';renderAsgn(id);buildClasses();}
+function toggleAsgn(id,aid){const a=S.g('asgn_'+id,[]);const x=a.find(y=>y.id===aid);if(x){x.done=!x.done;S.s('asgn_'+id,a);renderAsgn(id);if(x.done)setTimeout(()=>{S.s('asgn_'+id,S.g('asgn_'+id,[]).filter(y=>y.id!==aid));renderAsgn(id);buildClasses();},1500);else buildClasses();}}
+function delAsgn(id,aid){S.s('asgn_'+id,S.g('asgn_'+id,[]).filter(a=>a.id!==aid));renderAsgn(id);buildClasses();}
+buildClasses();
+
+// STUDY TIMER
+let timerInt=null,timerSec=0,timerRunning=false;
+function startTimer(mins){if(timerRunning)stopTimer();timerSec=mins*60;timerRunning=true;document.getElementById('timer-circle').classList.add('running');document.getElementById('timer-sub').textContent='Studying...';timerInt=setInterval(()=>{timerSec--;const m=Math.floor(timerSec/60);const s=timerSec%60;document.getElementById('timer-display').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;if(timerSec<=0){clearInterval(timerInt);timerRunning=false;document.getElementById('timer-circle').classList.remove('running');document.getElementById('timer-sub').textContent='Done!';logStudyDay();if('Notification' in window&&Notification.permission==='granted')new Notification('Orion\'s App',{body:'Study session complete! Great work. 📚'});}},1000);}
+function stopTimer(){if(timerInt)clearInterval(timerInt);timerRunning=false;document.getElementById('timer-circle').classList.remove('running');document.getElementById('timer-display').textContent='30:00';document.getElementById('timer-sub').textContent='Stopped';}
+function logStudyDay(){const now=new Date();const ds=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;const s=S.g('studied_days',[]);if(!s.includes(ds)){s.push(ds);S.s('studied_days',s);}document.getElementById('study-count').textContent=s.length;buildCalendar();}
+function buildCalendar(){
+  const now=new Date();const year=now.getFullYear();const month=now.getMonth();const first=new Date(year,month,1).getDay();const days=new Date(year,month+1,0).getDate();const studied=S.g('studied_days',[]);
+  const hd=document.getElementById('cal-heads');const gd=document.getElementById('cal-grid');if(!hd||!gd)return;
+  hd.innerHTML=['Su','Mo','Tu','We','Th','Fr','Sa'].map(d=>`<div style="font-size:10px;color:var(--tx3);text-align:center;padding:3px">${d}</div>`).join('');
+  let html='';for(let i=0;i<first;i++)html+='<div style="aspect-ratio:1;background:transparent"></div>';
+  for(let d=1;d<=days;d++){const ds=`${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;const isToday=d===now.getDate();const isDone=studied.includes(ds);let bg='var(--bg3)';let color='var(--tx2)';let border='transparent';if(isToday){bg='var(--rdim)';border='var(--red)';color='var(--rl)';}else if(isDone){bg='rgba(34,197,94,.15)';border='rgba(34,197,94,.3)';color='#4ade80';}html+=`<div style="aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:11px;border-radius:7px;background:${bg};border:1px solid ${border};color:${color}">${d}</div>`;}
+  gd.innerHTML=html;document.getElementById('study-count').textContent=S.g('studied_days',[]).length;
+}
+buildCalendar();
+
+async function analyzeAssignment(input){
+  if(!input.files[0])return;const file=input.files[0];const b64=await toB64(file);const cls=document.getElementById('assign-cls').value;const desc=document.getElementById('assign-desc').value.trim();
+  const rd=document.getElementById('assign-result');const rt=document.getElementById('assign-txt');rd.style.display='block';rt.innerHTML='<span class="spinner"></span> Analyzing...';
+  try{const txt=await claude([{role:'user',content:[{type:'image',source:{type:'base64',media_type:file.type,data:b64}},{type:'text',text:`Orion is a 15-year-old sophomore. This is an assignment for: ${cls}. About: ${desc||'not specified'}. Please: 1) Explain what the assignment is asking in simple terms. 2) Teach him all the concepts he needs to understand and complete it — explain WHY, not just WHAT. 3) Walk through how to approach each part step by step. 4) If there are specific problems, teach the method so he can do similar ones himself. Write like a smart older friend. Simple words. No complicated vocabulary.`}]},],2000);rt.textContent=txt;}catch(e){rt.textContent='Could not analyze. Check your internet.';}
+}
+
+// HEALTH
+function calcSleep(){const s=document.getElementById('sl-start').value;const e=document.getElementById('sl-end').value;if(!s||!e)return null;const[sh,sm]=s.split(':').map(Number);const[eh,em]=e.split(':').map(Number);let st=sh*60+sm,et=eh*60+em;if(et<=st)et+=1440;const hrs=((et-st)/60).toFixed(1);document.getElementById('sl-dur').innerHTML=`${hrs}<span class="su"> hrs</span>`;return parseFloat(hrs);}
+document.getElementById('sl-start').addEventListener('change',calcSleep);document.getElementById('sl-end').addEventListener('change',calcSleep);
+function saveSleep(){const h=calcSleep();if(!h)return alert('Set both times first.');const log=S.g('sleep_log',[]);log.push({date:new Date().toISOString(),hrs:h});S.s('sleep_log',log);updateHealthAvgs();alert(`Sleep logged — ${h} hours!`);}
+function addWater(oz){const t=S.g('water_today',0)+oz;S.s('water_today',t);updateWaterUI(t);}
+function customWater(){const inp=document.getElementById('water-custom');inp.style.display=inp.style.display==='none'?'block':'none';if(inp.style.display==='block')inp.onkeypress=e=>{if(e.key==='Enter'){addWater(parseInt(inp.value)||0);inp.value='';inp.style.display='none';}};}
+function updateWaterUI(t){const pct=Math.min(100,(t/128)*100);document.getElementById('water-fill').style.height=pct+'%';document.getElementById('water-lbl').textContent=`${t} / 128 oz`;document.getElementById('wd').textContent=t;document.getElementById('wn').textContent=Math.max(0,128-t);document.getElementById('h-water').innerHTML=`${Math.max(0,128-t)}<span class="su"> oz</span>`;document.getElementById('pwt-b').style.width=pct+'%';document.getElementById('pwt-t').textContent=t+' oz';}
+updateWaterUI(S.g('water_today',0));
+function saveSteps(){const s=parseInt(document.getElementById('steps-in').value);if(!s)return alert('Enter steps.');const log=S.g('steps_log',[]);log.push({date:new Date().toISOString(),steps:s});S.s('steps_log',log);S.s('steps_today',s);document.getElementById('steps-t').textContent=s.toLocaleString();document.getElementById('h-steps').textContent=s.toLocaleString();document.getElementById('steps-in').value='';updateHealthAvgs();}
+function updateHealthAvgs(){const sl=S.g('sleep_log',[]).slice(-7);const sp=S.g('steps_log',[]).slice(-7);if(sl.length)document.getElementById('avg-sl').textContent=(sl.reduce((a,x)=>a+x.hrs,0)/sl.length).toFixed(1);if(sp.length)document.getElementById('avg-st').textContent=Math.round(sp.reduce((a,x)=>a+x.steps,0)/sp.length).toLocaleString();document.getElementById('avg-wt').textContent=S.g('water_today',0);document.getElementById('wk-wo').textContent=S.g('workouts_week',[]).length;}
+updateHealthAvgs();
+
+// TASKS
+const defaultTasks=[{id:1,text:'Wake up & weigh yourself',time:'7:17 AM',done:false},{id:2,text:'Drink 16 oz water right away',time:'7:20 AM',done:false},{id:3,text:'High-protein breakfast',time:'8:00 AM',done:false},{id:4,text:'Review class notes',time:'9:00 AM',done:false},{id:5,text:'Complete today\'s workout',time:'11:00 AM',done:false},{id:6,text:'Lunch + track food',time:'1:00 PM',done:false},{id:7,text:'Study 1 focused hour',time:'3:00 PM',done:false},{id:8,text:'Check in with girlfriend',time:'5:00 PM',done:false},{id:9,text:'Apply to 1 job or side hustle',time:'6:00 PM',done:false},{id:10,text:'Log sleep, water, steps',time:'9:30 PM',done:false}];
+function timeToMins(t){if(!t)return 0;const m=t.match(/(\d+):(\d+)\s*(AM|PM)/i);if(!m)return 0;let h=parseInt(m[1]),mn=parseInt(m[2]),ap=m[3].toUpperCase();if(ap==='PM'&&h!==12)h+=12;if(ap==='AM'&&h===12)h=0;return h*60+mn;}
+function renderTasks(){
+  let tasks=S.g('tasks',defaultTasks);
+  tasks.sort((a,b)=>timeToMins(a.time)-timeToMins(b.time));
+  const el=document.getElementById('task-list');
+  el.innerHTML=tasks.map(t=>`
+    <div class="ci ${t.done?'done':''}" id="tsk${t.id}">
+      <div class="cb ${t.done?'on':''}" onclick="toggleTask(${t.id})"></div>
+      <span class="cit">${t.text}</span>
+      <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+        <span class="ctm" id="ttime${t.id}">${t.time||''}</span>
+        <button onclick="showTimeEdit(${t.id})" style="background:none;border:none;font-size:16px;cursor:pointer;padding:4px;color:var(--tx3);min-width:30px">✏️</button>
+        <button onclick="delTask(${t.id})" style="background:none;border:none;font-size:14px;cursor:pointer;padding:4px;color:var(--tx3);min-width:30px">✕</button>
+      </div>
+    </div>
+    <div id="tedit${t.id}" style="display:none;padding:8px;background:var(--bg3);border:1px solid var(--rb);border-radius:var(--rs);margin-bottom:8px;margin-top:-6px">
+      <div style="font-size:13px;color:var(--tx2);margin-bottom:6px">New time for: <strong>${t.text}</strong></div>
+      <div style="display:flex;gap:8px">
+        <input type="text" id="tinput${t.id}" placeholder="e.g. 3:30 PM" value="${t.time||''}" style="margin:0;flex:1;padding:10px;font-size:15px">
+        <button onclick="saveTaskTime(${t.id})" style="background:var(--red);color:white;border:none;border-radius:var(--rs);padding:0 16px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap">Save</button>
+        <button onclick="document.getElementById('tedit${t.id}').style.display='none'" style="background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--rs);padding:0 12px;font-size:14px;color:var(--tx2);cursor:pointer">✕</button>
+      </div>
+    </div>`).join('');
+  updateRing(tasks);
+}
+function showTimeEdit(id){
+  const el=document.getElementById('tedit'+id);
+  if(!el)return;
+  el.style.display=el.style.display==='none'?'block':'none';
+  if(el.style.display==='block'){
+    const inp=document.getElementById('tinput'+id);
+    if(inp){inp.focus();inp.select();}
+  }
+}
+function saveTaskTime(id){
+  const inp=document.getElementById('tinput'+id);
+  if(!inp)return;
+  const newTime=inp.value.trim();
+  if(!newTime)return;
+  const tasks=S.g('tasks',defaultTasks);
+  const t=tasks.find(x=>x.id===id);
+  if(t)t.time=newTime;
+  S.s('tasks',tasks);
+  document.getElementById('tedit'+id).style.display='none';
+  renderTasks();
+}
+function toggleTask(id){let t=S.g('tasks',defaultTasks);const x=t.find(y=>y.id===id);if(x)x.done=!x.done;S.s('tasks',t);renderTasks();}
+function delTask(id){S.s('tasks',S.g('tasks',defaultTasks).filter(t=>t.id!==id));renderTasks();}
+function toggleAddTask(){const el=document.getElementById('add-task-area');el.style.display=el.style.display==='none'?'block':'none';}
+function addTask(){const txt=document.getElementById('new-task-txt').value.trim();if(!txt)return;const time=document.getElementById('new-task-time').value;const t=S.g('tasks',defaultTasks);t.push({id:Date.now(),text:txt,time,done:false});S.s('tasks',t);document.getElementById('new-task-txt').value='';document.getElementById('new-task-time').value='';document.getElementById('add-task-area').style.display='none';renderTasks();}
+function updateRing(tasks){const done=tasks.filter(t=>t.done).length;const total=tasks.length;const pct=total?done/total:0;const circumference=339.3;const offset=circumference-(pct*circumference);document.getElementById('ring-fill').style.strokeDashoffset=offset;document.getElementById('ring-label').textContent=`${done} / ${total}`;const msgs=['Keep going! 💪','You got this!','Nice work! 🔥','Crushing it! ⚡','Almost there!','Done! Legend. 🏆'];document.getElementById('ring-sub').textContent=done===total&&total>0?'All done! Legend. 🏆':'tasks completed today';}
+renderTasks();
+
+// LOVE
+async function personalizeRelationship(){const info=document.getElementById('gf-info').value.trim();if(!info)return alert('Tell me about her first!');const el=document.getElementById('personalized-tips');el.style.display='block';el.innerHTML='<span class="spinner"></span> Personalizing...';
+try{const txt=await claude([{role:'user',content:`Orion is a 15-year-old guy in a relationship. Here's what he told me about his girlfriend: "${info}". Give him 5 specific, personalized tips for being a great boyfriend to HER — based on what she likes, how she is, what they do together. Each tip should be something specific and actionable that fits her personality. Keep each tip 2–3 sentences. Sound like a cool older friend giving real advice, not a therapist.`}]);el.innerHTML=`<div class="ar"><div class="art">Personalized for You Two 💜</div><div class="arb">${txt}</div></div>`;}catch(e){el.innerHTML='<div style="color:var(--tx3);font-size:13px">Could not load. Check internet.</div>';}}
+function saveRel(){const d=document.getElementById('rel-did').value.trim();const im=document.getElementById('rel-imp').value.trim();if(!d&&!im)return;const log=S.g('rel_log',[]);log.push({date:new Date().toISOString(),d,im});S.s('rel_log',log);document.getElementById('rel-did').value='';document.getElementById('rel-imp').value='';alert('Saved. Keep being intentional!');}
+
+// SKILLS - initialize on load
+document.getElementById('best-wpm').textContent=S.g('best_wpm',0)||'—';
+document.getElementById('tests-done').textContent=S.g('tests_done',0);
+renderMiniChart('type-chart',S.g('wpm_hist',[]));
+document.getElementById('best-read').textContent=S.g('best_read',0)||'—';
+document.getElementById('read-sessions').textContent=S.g('read_sessions',0);
+renderMiniChart('read-chart',S.g('read_hist',[]));
+
+function switchSk(type,el){
+  document.querySelectorAll('#page-skills .pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  ['typing','reading','thinking'].forEach(t=>document.getElementById('sk-'+t).style.display=t===type?'block':'none');
+  if(type==='typing'){
+    document.getElementById('best-wpm').textContent=S.g('best_wpm',0)||'—';
+    document.getElementById('tests-done').textContent=S.g('tests_done',0);
+    setTimeout(()=>renderMiniChart('type-chart',S.g('wpm_hist',[])),50);
+  }
+  if(type==='reading'){
+    document.getElementById('best-read').textContent=S.g('best_read',0)||'—';
+    document.getElementById('read-sessions').textContent=S.g('read_sessions',0);
+    setTimeout(()=>renderMiniChart('read-chart',S.g('read_hist',[])),50);
+  }
+}
+function renderMiniChart(id,data){
+  const el=document.getElementById(id);
+  if(!el)return;
+  if(!data||!data.length){
+    el.innerHTML='<div style="font-size:12px;color:var(--tx3);padding:8px 0">No data yet — complete a test to see your history</div>';
+    return;
+  }
+  const max=Math.max(...data,1);
+  el.innerHTML=data.map(v=>`<div class="mini-bar" data-val="${v}" style="height:${Math.max(4,Math.round((v/max)*46))}px" title="${v} WPM"></div>`).join('');
+}
+
+const typePrompts=['The American Revolution began in 1775 when colonists who believed that taxation without representation was unjust began organizing against British rule. By 1776 the Continental Congress had united thirteen colonies behind a single declaration of independence.','Photosynthesis is the process plants use to convert sunlight into stored chemical energy. Chlorophyll inside plant cells absorbs light, powering a reaction that transforms carbon dioxide and water into glucose and oxygen that gets released into the atmosphere.','In mathematics a function is a relationship where each input corresponds to exactly one output. When f of x equals three x plus two, then f of four equals fourteen because three times four is twelve and twelve plus two is fourteen.','Progressive overload means consistently doing slightly more work over time so your muscles keep adapting and growing stronger. You can add more weight, more reps, or more sets every week or two to keep challenging your body.'];
+let typeStart=null,typeActive=false;
+function startTyping(){const p=typePrompts[Math.floor(Math.random()*typePrompts.length)];document.getElementById('type-prompt').textContent=p;const inp=document.getElementById('type-in');inp.value='';inp.disabled=false;inp.focus();document.getElementById('type-res').style.display='none';typeStart=Date.now();typeActive=true;inp.oninput=checkTypeDone;}
+function checkTypeDone(){if(!typeActive)return;const p=document.getElementById('type-prompt').textContent;const v=document.getElementById('type-in').value;if(v.length>=p.length){typeActive=false;const el=(Date.now()-typeStart)/60000;const wpm=Math.round(p.split(' ').length/el);let c=0;for(let i=0;i<Math.min(v.length,p.length);i++)if(v[i]===p[i])c++;const acc=Math.round((c/p.length)*100);document.getElementById('wpm-val').textContent=wpm+' WPM';document.getElementById('wpm-acc').textContent=`Accuracy: ${acc}% — ${acc>=90?'Great job!':'Try slowing down a little for accuracy'}`;document.getElementById('type-res').style.display='block';document.getElementById('type-in').disabled=true;const best=S.g('best_wpm',0);if(wpm>best)S.s('best_wpm',wpm);S.s('tests_done',S.g('tests_done',0)+1);const hist=S.g('wpm_hist',[]);hist.push(wpm);if(hist.length>10)hist.shift();S.s('wpm_hist',hist);document.getElementById('best-wpm').textContent=S.g('best_wpm',0);document.getElementById('tests-done').textContent=S.g('tests_done',0);renderMiniChart('type-chart',hist);}}
+function resetTyping(){document.getElementById('type-prompt').textContent='Press Start to load your passage.';document.getElementById('type-in').value='';document.getElementById('type-in').disabled=true;document.getElementById('type-res').style.display='none';typeActive=false;document.getElementById('best-wpm').textContent=S.g('best_wpm',0)||'—';document.getElementById('tests-done').textContent=S.g('tests_done',0);}
+
+const readPassages=[
+  {text:'The Great Depression of the 1930s was caused not by a single event but by a chain of economic failures compounding over time. The stock market crash of 1929 wiped out billions in wealth and shook confidence across the economy. Banks that had invested in the market began collapsing, and without federal deposit insurance, ordinary people lost all their savings overnight. Unemployment climbed to 25 percent by 1933, meaning one in four workers had no income. Agricultural prices collapsed, forcing farmers off their land. President Roosevelt responded with the New Deal — a wave of programs designed to provide relief, create jobs, and reform the financial system to prevent a recurrence.',words:104},
+  {text:'DNA carries all the genetic instructions for how a living organism develops, functions, and reproduces. Inside almost every cell of your body, there are about six feet of DNA coiled tightly into structures called chromosomes. The four chemical bases along the DNA strand — adenine, thymine, guanine, and cytosine — spell out the instructions for building proteins. Proteins carry out virtually every function in the body, from contracting your muscles to fighting infections to digesting food. The Human Genome Project, completed in 2003, successfully mapped all three billion base pairs in human DNA and has since led to major breakthroughs in medicine, including cancer treatments targeted to specific genetic mutations.',words:107},
+  {text:'Compound interest is one of the most powerful forces in personal finance, and understanding it early can change the trajectory of your financial life. When you invest money, you earn interest not only on your original amount but also on all the interest that has already accumulated. This creates exponential growth rather than linear growth over time. A sixteen-year-old who saves just one hundred dollars per month starting today, earning an average eight percent annual return, could accumulate over six hundred thousand dollars by retirement — from total contributions of only about fifty-eight thousand dollars. The key variable is time. Starting even a few years earlier makes a dramatic difference because compound interest accelerates the longer it runs.',words:115},
+];
+let readStart=null,curPass=null;
+function startReading(){curPass=readPassages[Math.floor(Math.random()*readPassages.length)];document.getElementById('read-passage').textContent=curPass.text;document.getElementById('read-passage').style.display='block';document.getElementById('read-ready').style.display='none';document.getElementById('read-start-btn').style.display='none';document.getElementById('read-done-btn').style.display='block';document.getElementById('read-res').style.display='none';readStart=Date.now();}
+function doneReading(){if(!readStart||!curPass)return;const el=(Date.now()-readStart)/60000;const wpm=Math.round(curPass.words/el);document.getElementById('read-wpm').textContent=wpm+' WPM';document.getElementById('read-res').style.display='block';document.getElementById('read-done-btn').style.display='none';document.getElementById('read-start-btn').style.display='block';document.getElementById('read-passage').style.display='none';document.getElementById('read-ready').style.display='block';const best=S.g('best_read',0);if(wpm>best)S.s('best_read',wpm);S.s('read_sessions',S.g('read_sessions',0)+1);const hist=S.g('read_hist',[]);hist.push(wpm);if(hist.length>10)hist.shift();S.s('read_hist',hist);document.getElementById('best-read').textContent=S.g('best_read',0);document.getElementById('read-sessions').textContent=S.g('read_sessions',0);renderMiniChart('read-chart',hist);readStart=null;}
+function resetReadBest(){
+  // confirm() is blocked in sandboxed iframes on iOS — use inline confirm instead
+  const rc=document.getElementById('read-chart');
+  if(!rc)return;
+  rc.innerHTML=`<div style="background:var(--rdim);border:1px solid var(--rb);border-radius:10px;padding:12px;margin-top:4px">
+    <div style="font-size:14px;font-weight:600;margin-bottom:10px">Reset all reading history?</div>
+    <div style="display:flex;gap:8px">
+      <button onclick="confirmResetRead()" style="flex:1;padding:10px;background:var(--red);color:white;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Yes, Reset</button>
+      <button onclick="renderMiniChart('read-chart',S.g('read_hist',[]))" style="flex:1;padding:10px;background:var(--bg3);border:1px solid var(--bdr);color:var(--tx2);border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Cancel</button>
+    </div>
+  </div>`;
+}
+function confirmResetRead(){
+  S.s('best_read',0);
+  S.s('read_hist',[]);
+  S.s('read_sessions',0);
+  const br=document.getElementById('best-read');
+  const rs=document.getElementById('read-sessions');
+  const rc=document.getElementById('read-chart');
+  if(br)br.textContent='—';
+  if(rs)rs.textContent='0';
+  if(rc)rc.innerHTML='<div style="font-size:13px;color:var(--tx3);padding:8px 0">✅ History cleared — complete a test to start tracking</div>';
+}
+const ctScenarios=[
+  {s:'Your friend says "This energy drink gives me 400% more focus — I saw a study online." He sends you a link to the energy drink company\'s own website as proof.',q:'What\'s the problem with using a company\'s own website as proof their product works? What would count as actual good evidence?'},
+  {s:'A social media post says "Students who listen to music while studying get better grades." It has 50,000 likes.',q:'Does the number of likes tell you anything about whether this is true? What questions would you ask before believing it?'},
+  {s:'You failed a test. Your first thought is "This teacher is unfair and doesn\'t like me."',q:'What other explanations could there be? How would you figure out which one is actually true instead of just assuming?'},
+  {s:'An ad says "9 out of 10 dentists recommend this toothpaste." No other details are given.',q:'What information is missing that would help you know if this claim actually means anything?'},
+];
+let ctIdx=S.g('ct_idx',0);
+function loadCT(){const ct=ctScenarios[ctIdx%ctScenarios.length];document.getElementById('ct-scene').textContent=ct.s;document.getElementById('ct-q').textContent=ct.q;document.getElementById('ct-q-area').style.display='block';document.getElementById('ct-fb').style.display='none';document.getElementById('ct-ans').value='';ctIdx++;S.s('ct_idx',ctIdx);}
+async function submitCT(){const ans=document.getElementById('ct-ans').value.trim();if(!ans)return alert('Write something first!');const ct=ctScenarios[(ctIdx-1)%ctScenarios.length];const fb=document.getElementById('ct-fb');const fbt=document.getElementById('ct-fb-txt');fb.style.display='block';fbt.innerHTML='<span class="spinner"></span> Checking...';
+try{const txt=await claude([{role:'user',content:`Orion (15yo) was given this critical thinking scenario: "${ct.s}". Question: "${ct.q}". His answer: "${ans}". Give him feedback in 3 short sentences: 1) what he got right, 2) what he missed or could think deeper on, 3) the key thinking skill this tested. Simple language, friendly tone.`}],500);fbt.textContent=txt;}catch(e){fbt.textContent='Could not get feedback. Check your internet.';}}
+
+function getAppContext(){return `You are Orion's personal AI assistant built into his goals app. Here is his current data:
+- Name: Orion, 15 years old, Phoenix AZ 85050, going into junior year of high school
+- Weight goal: 189.9 lbs → 162.5 lbs by August 25, 2026 (his birthday)
+- Current weight: ${S.g('weight',189.9)} lbs
+- Savings goal: $5,000 for an electric bike. Currently saved: $${Math.round(S.g('savings',0))}
+- Bench Press: ${S.g('bench',180)} lbs (goal: 225). Squat: ${S.g('squat',255)} lbs (goal: 295). Deadlift: ${S.g('dead',225)} lbs (goal: 275)
+- Classes: Algebra 3-4, Biology, Culinary, Weight Training
+- Workouts this week: ${S.g('workouts_week',[]).length}/5
+- Water today: ${S.g('water_today',0)} oz (goal: 128)
+- Career log answers so far: ${S.g('career_log',[]).length}
+- Girlfriend: yes (he's working on being a better boyfriend)
+- He goes to LA Fitness. No job yet. Lives near Desert Ridge area.
+Be his friend, coach, and mentor. Be direct, use simple language, be encouraging. Talk like a real person.`;}
+
+let chatHistory=[];
+async function sendChat(){const inp=document.getElementById('chat-in');const msg=inp.value.trim();if(!msg)return;inp.value='';appendMsg(msg,'user','chat-wrap');chatHistory.push({role:'user',content:msg});const wrap=document.getElementById('chat-wrap');const thinking=document.createElement('div');thinking.className='msg msg-ai';thinking.innerHTML='<span class="spinner"></span>';wrap.appendChild(thinking);wrap.scrollTop=wrap.scrollHeight;
+try{const msgs=chatHistory.length===1?[{role:'user',content:getAppContext()+'\n\nUser message: '+msg}]:chatHistory;const txt=await claude(msgs,1000);thinking.remove();appendMsg(txt,'ai','chat-wrap');chatHistory.push({role:'assistant',content:txt});}catch(e){thinking.remove();appendMsg('Could not connect. Check your internet.','ai','chat-wrap');}}
+function appendMsg(txt,role,wrapId){const wrap=document.getElementById(wrapId);const div=document.createElement('div');div.className='msg '+(role==='ai'?'msg-ai':'msg-u');div.textContent=txt;wrap.appendChild(div);wrap.scrollTop=wrap.scrollHeight;}
+
+// NOTIFICATIONS
+if(!S.g('notif_asked',false)){S.s('notif_asked',true);setTimeout(()=>{if('Notification' in window&&Notification.permission==='default')if(confirm('Allow daily reminders? Orion\'s App will remind you to log your goals.'))Notification.requestPermission().then(p=>{if(p==='granted')new Notification('Orion\'s App',{body:'Reminders on. You\'re locked in. 🔥'});});},2500);}
+</script>
+</body>
+</html>
