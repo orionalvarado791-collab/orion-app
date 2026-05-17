@@ -163,7 +163,40 @@ label{display:block;font-size:14px;color:var(--tx2);margin-bottom:6px}
 .weather-desc{font-size:13px;color:var(--tx2)}
 .weather-tips{font-size:12px;color:var(--tx3);margin-top:4px;line-height:1.4}
 
-/* Safari install modal */
+/* App grid */
+.app-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
+.app-tile{background:var(--card);border:1px solid var(--bdr);border-radius:18px;padding:18px 10px 14px;text-align:center;cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent;user-select:none}
+.app-tile:active{transform:scale(.94);background:var(--bg3)}
+.app-tile-icon{font-size:32px;display:block;margin-bottom:8px}
+.app-tile-label{font-size:12px;font-weight:600;color:var(--tx2)}
+.app-tile.red-tile{background:var(--rdim);border-color:var(--rb)}
+.app-tile.red-tile .app-tile-label{color:var(--rl)}
+/* Menu page */
+.menu-row{display:flex;align-items:center;gap:16px;padding:16px;background:var(--card);border:1px solid var(--bdr);border-radius:var(--rs);margin-bottom:10px;cursor:pointer;transition:all .2s}
+.menu-row:active{background:var(--bg3)}
+.menu-row-icon{font-size:28px;flex-shrink:0;width:48px;height:48px;background:var(--bg3);border-radius:12px;display:flex;align-items:center;justify-content:center}
+.menu-row-text strong{font-size:15px;display:block;margin-bottom:2px}
+.menu-row-text span{font-size:13px;color:var(--tx2)}
+.menu-row-arrow{margin-left:auto;color:var(--tx3);font-size:18px}
+.grade-display{font-size:72px;font-weight:800;line-height:1}
+.grade-A{color:#4ade80}.grade-B{color:#60a5fa}.grade-C{color:#fbbf24}.grade-D{color:#f97316}.grade-F{color:var(--rl)}
+.report-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--bdr)}
+.report-row:last-child{border:none}
+.report-row-label{font-size:14px;color:var(--tx2)}
+.report-row-score{font-size:15px;font-weight:700;color:var(--tx)}
+/* Mood button selected */
+.mood-sel{background:var(--red)!important;border-color:var(--red)!important;color:white!important}
+/* Measurement history */
+.meas-entry{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--rs);padding:14px;margin-bottom:8px}
+.meas-date{font-size:12px;color:var(--tx3);margin-bottom:8px}
+.meas-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.meas-val{font-size:13px;color:var(--tx2);text-align:center}
+.meas-val strong{display:block;font-size:15px;color:var(--tx);font-weight:700}
+/* Date cards */
+.date-card{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--rs);padding:14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.date-name{font-size:14px;font-weight:600}
+.date-days{font-size:13px;color:var(--rl);font-weight:600}
+.date-actual{font-size:12px;color:var(--tx3);margin-top:2px}
 .safari-modal{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:999;display:none;align-items:flex-end;justify-content:center;padding:0}
 .safari-modal-box{background:var(--card);border-radius:22px 22px 0 0;padding:28px 22px 44px;width:100%;max-width:480px;border-top:2px solid var(--rb)}
 .safari-modal-title{font-size:18px;font-weight:800;margin-bottom:20px;color:var(--tx)}
@@ -184,20 +217,22 @@ label{display:block;font-size:14px;color:var(--tx2);margin-bottom:6px}
     <div class="pill-hdr" id="countdown-text">Loading...</div>
   </div>
 
-  <!-- Install banner -->
-  <div class="install-banner" id="install-banner">
-    <div class="install-banner-icon">📲</div>
-    <div class="install-banner-text" style="flex:1">
-      <strong>Save to Home Screen</strong>
-      <p style="margin-bottom:8px">Open in Safari → tap <strong>Share ↑</strong> → "Add to Home Screen"</p>
-      <button onclick="openInSafari()" style="background:var(--red);color:white;border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;width:100%">Open in Safari →</button>
-    </div>
-    <div class="install-close" onclick="document.getElementById('install-banner').style.display='none'" style="align-self:flex-start">✕</div>
-  </div>
-
   <div class="tip-b">
     <strong>Today's Focus</strong>
     <p id="tip-text">Loading...</p>
+  </div>
+
+  <div class="slabel">Quick Access</div>
+  <div class="app-grid">
+    <div class="app-tile" onclick="showPage('fitness',document.getElementById('nav-fitness'))"><span class="app-tile-icon">💪</span><div class="app-tile-label">Fitness</div></div>
+    <div class="app-tile" onclick="showPage('health',null)"><span class="app-tile-icon">❤️</span><div class="app-tile-label">Health</div></div>
+    <div class="app-tile" onclick="showPage('nutrition',null)"><span class="app-tile-icon">🍽️</span><div class="app-tile-label">Food</div></div>
+    <div class="app-tile" onclick="showPage('school',null)"><span class="app-tile-icon">📚</span><div class="app-tile-label">School</div></div>
+    <div class="app-tile" onclick="showPage('finance',null)"><span class="app-tile-icon">💰</span><div class="app-tile-label">Money</div></div>
+    <div class="app-tile" onclick="showPage('love',null)"><span class="app-tile-icon">💜</span><div class="app-tile-label">Love</div></div>
+    <div class="app-tile" onclick="showPage('skills',null)"><span class="app-tile-icon">⚡</span><div class="app-tile-label">Skills</div></div>
+    <div class="app-tile" onclick="showPageExtras('report',null)"><span class="app-tile-icon">📊</span><div class="app-tile-label">Report</div></div>
+    <div class="app-tile" onclick="showPageExtras('extras',null)"><span class="app-tile-icon">➕</span><div class="app-tile-label">More</div></div>
   </div>
 
   <div class="slabel">At a Glance</div>
@@ -722,50 +757,169 @@ label{display:block;font-size:14px;color:var(--tx2);margin-bottom:6px}
   </div>
 </div>
 
+<!-- MENU PAGE -->
+<div id="page-menu" class="page">
+  <div class="app-header"><h1>☰ All Pages</h1><div class="sub">Tap any section to open it</div></div>
+  <div class="menu-row" onclick="showPage('fitness',document.getElementById('nav-fitness'))"><div class="menu-row-icon">💪</div><div class="menu-row-text"><strong>Fitness</strong><span>Workouts, strength goals, meal plan</span></div><div class="menu-row-arrow">›</div></div>
+  <div class="menu-row" onclick="showPage('health',null)"><div class="menu-row-icon">❤️</div><div class="menu-row-text"><strong>Health</strong><span>Sleep, water, steps, averages</span></div><div class="menu-row-arrow">›</div></div>
+  <div class="menu-row" onclick="showPage('nutrition',null)"><div class="menu-row-icon">🍽️</div><div class="menu-row-text"><strong>Food & Nutrition</strong><span>Calories, macros, food scan, bot</span></div><div class="menu-row-arrow">›</div></div>
+  <div class="menu-row" onclick="showPage('school',null)"><div class="menu-row-icon">📚</div><div class="menu-row-text"><strong>School</strong><span>Lessons, classes, career, calendar</span></div><div class="menu-row-arrow">›</div></div>
+  <div class="menu-row" onclick="showPage('finance',null)"><div class="menu-row-icon">💰</div><div class="menu-row-text"><strong>Money</strong><span>Savings, jobs, chores, goals</span></div><div class="menu-row-arrow">›</div></div>
+  <div class="menu-row" onclick="showPage('love',null)"><div class="menu-row-icon">💜</div><div class="menu-row-text"><strong>Relationship</strong><span>Tips, date ideas, check-ins</span></div><div class="menu-row-arrow">›</div></div>
+  <div class="menu-row" onclick="showPage('skills',null)"><div class="menu-row-icon">⚡</div><div class="menu-row-text"><strong>Skills Lab</strong><span>Typing, reading, critical thinking</span></div><div class="menu-row-arrow">›</div></div>
+  <div class="menu-row" onclick="showPageExtras('report',null)"><div class="menu-row-icon">📊</div><div class="menu-row-text"><strong>Weekly Report</strong><span>Grade, strength charts, study hours</span></div><div class="menu-row-arrow">›</div></div>
+  <div class="menu-row" onclick="showPageExtras('extras',null)"><div class="menu-row-icon">➕</div><div class="menu-row-text"><strong>More</strong><span>Measurements, supplements, mood, dates</span></div><div class="menu-row-arrow">›</div></div>
+  <div class="menu-row" onclick="showPage('ai',document.getElementById('nav-ai'))"><div class="menu-row-icon">🤖</div><div class="menu-row-text"><strong>AI Chat</strong><span>Your personal AI assistant</span></div><div class="menu-row-arrow">›</div></div>
+</div>
+
 </div><!-- /container -->
 
 <div class="nav">
-  <div class="ni active" onclick="showPage('home',this)"><span class="nic">🏠</span>Home</div>
-  <div class="ni" onclick="showPage('fitness',this)"><span class="nic">💪</span>Fitness</div>
-  <div class="ni" onclick="showPage('finance',this)"><span class="nic">💰</span>Money</div>
-  <div class="ni" onclick="showPage('school',this)"><span class="nic">📚</span>School</div>
-  <div class="ni" onclick="showPage('health',this)"><span class="nic">❤️</span>Health</div>
-  <div class="ni" onclick="showPage('tasks',this)"><span class="nic">✅</span>Tasks</div>
-  <div class="ni" onclick="showPage('love',this)"><span class="nic">💜</span>Love</div>
-  <div class="ni" onclick="showPage('skills',this)"><span class="nic">⚡</span>Skills</div>
-  <div class="ni" onclick="showPage('nutrition',this)"><span class="nic">🍽️</span>Food</div>
-  <div class="ni" onclick="showPage('ai',this)"><span class="nic">🤖</span>AI</div>
+  <div class="ni active" id="nav-home" onclick="showPage('home',this)"><span class="nic">🏠</span>Home</div>
+  <div class="ni" id="nav-fitness" onclick="showPage('fitness',this)"><span class="nic">💪</span>Fitness</div>
+  <div class="ni" id="nav-tasks" onclick="showPage('tasks',this)"><span class="nic">✅</span>Tasks</div>
+  <div class="ni" id="nav-ai" onclick="showPage('ai',this)"><span class="nic">🤖</span>AI</div>
+  <div class="ni" id="nav-menu" onclick="showPage('menu',this)"><span class="nic">☰</span>Menu</div>
 </div>
 
-<!-- Safari Install Modal -->
-<div class="safari-modal" id="safari-modal" onclick="if(event.target===this)closeSafariModal()">
-  <div class="safari-modal-box">
-    <div class="safari-modal-title">📲 Add Orion's App to Your Phone</div>
-    <div class="safari-step">
-      <div class="safari-step-num">1</div>
-      <div class="safari-step-text"><strong>Download this file</strong> — tap the download button above this app window and save it to your phone's Files app</div>
+<!-- WEEKLY REPORT CARD -->
+<div id="page-report" class="page">
+  <div class="app-header"><h1>📊 Weekly Report</h1><div class="sub">Your life GPA — updated every Sunday</div></div>
+
+  <div class="card" style="background:linear-gradient(135deg,rgba(224,49,49,.15),rgba(224,49,49,.05));border-color:var(--rb)">
+    <div style="text-align:center;padding:10px 0 16px">
+      <div style="font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--rl);margin-bottom:8px">This Week's Grade</div>
+      <div style="font-size:72px;font-weight:800;color:var(--tx);line-height:1" id="report-grade">—</div>
+      <div style="font-size:16px;color:var(--tx2);margin-top:6px" id="report-score">Generate your report below</div>
     </div>
-    <div class="safari-step">
-      <div class="safari-step-num">2</div>
-      <div class="safari-step-text"><strong>Open the Files app</strong> on your iPhone — find the file called <strong>orions-app-v5.html</strong> in Downloads</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Category Scores</div>
+    <div id="report-categories"></div>
+    <button class="btn btn-p" style="margin-top:6px" onclick="generateReport()">Generate This Week's Report Card</button>
+  </div>
+
+  <div class="card" id="report-advice-card" style="display:none">
+    <div class="card-title">AI Coach Feedback</div>
+    <div id="report-advice" style="font-size:14px;color:var(--tx2);line-height:1.6"></div>
+  </div>
+
+  <div class="slabel">Strength Progress Charts</div>
+  <div class="card">
+    <div class="card-title">Bench Press History</div>
+    <div class="mini-chart" id="bench-chart"></div>
+    <div style="font-size:12px;color:var(--tx3);margin-top:6px">Each bar = one logged session (lbs)</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Squat History</div>
+    <div class="mini-chart" id="squat-chart"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Deadlift History</div>
+    <div class="mini-chart" id="dead-chart"></div>
+  </div>
+
+  <div class="slabel">Study Hours This Summer</div>
+  <div class="card">
+    <div style="text-align:center;padding:8px 0">
+      <div style="font-size:48px;font-weight:800;color:var(--rl)" id="total-study-hrs">0</div>
+      <div style="font-size:14px;color:var(--tx2);margin-top:4px">total hours studied</div>
+      <div style="font-size:13px;color:var(--tx3);margin-top:4px" id="study-streak">Complete study sessions on the School page to track hours</div>
     </div>
-    <div class="safari-step">
-      <div class="safari-step-num">3</div>
-      <div class="safari-step-text"><strong>Tap the file</strong> — it will open in Safari automatically</div>
+    <div class="pw" style="margin-top:10px">
+      <div class="pl"><span>Summer goal: 100 hours</span><span id="study-hr-pct">0%</span></div>
+      <div class="pt"><div class="pf" id="study-hr-bar" style="width:0%"></div></div>
     </div>
-    <div class="safari-step">
-      <div class="safari-step-num">4</div>
-      <div class="safari-step-text"><strong>In Safari</strong> — tap the <strong>Share button ↑</strong> at the bottom of the screen</div>
+  </div>
+</div>
+
+<!-- EXTRAS PAGE -->
+<div id="page-extras" class="page">
+  <div class="app-header"><h1>➕ More</h1><div class="sub">Measurements · Supplements · Mood · Dates</div></div>
+
+  <div class="pill-tabs">
+    <div class="pill active" onclick="switchExtras('measurements',this)">📏 Body</div>
+    <div class="pill" onclick="switchExtras('supplements',this)">💊 Supps</div>
+    <div class="pill" onclick="switchExtras('mood',this)">😊 Mood</div>
+    <div class="pill" onclick="switchExtras('dates',this)">📅 Dates</div>
+  </div>
+
+  <!-- MEASUREMENTS -->
+  <div id="ext-measurements">
+    <div class="card">
+      <div class="card-title">📏 Body Measurements</div>
+      <p style="font-size:13px;color:var(--tx2);margin-bottom:14px">Track these monthly. You'll see muscle gains even when the scale doesn't move. Measure in the morning.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div><label>Neck (inches)</label><input type="number" id="meas-neck" placeholder="e.g. 15" step="0.5" style="margin:0"></div>
+        <div><label>Chest (inches)</label><input type="number" id="meas-chest" placeholder="e.g. 38" step="0.5" style="margin:0"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+        <div><label>Waist (inches)</label><input type="number" id="meas-waist" placeholder="e.g. 34" step="0.5" style="margin:0"></div>
+        <div><label>Hips (inches)</label><input type="number" id="meas-hips" placeholder="e.g. 36" step="0.5" style="margin:0"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+        <div><label>Left Arm (inches)</label><input type="number" id="meas-arm" placeholder="e.g. 13" step="0.5" style="margin:0"></div>
+        <div><label>Thigh (inches)</label><input type="number" id="meas-thigh" placeholder="e.g. 22" step="0.5" style="margin:0"></div>
+      </div>
+      <button class="btn btn-p" style="margin-top:14px" onclick="saveMeasurements()">Save Measurements</button>
     </div>
-    <div class="safari-step">
-      <div class="safari-step-num">5</div>
-      <div class="safari-step-text">Scroll down and tap <strong>"Add to Home Screen"</strong> → tap <strong>Add</strong> in the top right</div>
+    <div class="slabel">Measurement History</div>
+    <div id="meas-history"></div>
+  </div>
+
+  <!-- SUPPLEMENTS -->
+  <div id="ext-supplements" style="display:none">
+    <div class="card">
+      <div class="card-title">💊 Daily Supplements</div>
+      <p style="font-size:13px;color:var(--tx2);margin-bottom:14px">Check these off daily. Consistency is what makes supplements actually work.</p>
+      <div id="supp-list"></div>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <input type="text" id="supp-in" placeholder="Add supplement..." style="margin:0;flex:1">
+        <button class="btn btn-g" style="width:auto;padding:0 14px;margin:0" onclick="addSupp()">Add</button>
+      </div>
     </div>
-    <div class="safari-step">
-      <div class="safari-step-num">6</div>
-      <div class="safari-step-text">✅ Done — <strong>Orion's App</strong> now lives on your home screen like a real app!</div>
+    <div class="card">
+      <div class="card-title">Supplement Tips for Your Goals</div>
+      <div class="gi"><div class="gn">🥛 Protein Powder</div><div class="dt">Take within 30 min after workout. Walmart brand is $25/tub and works just as well as expensive ones. Look for 25g protein per scoop.</div></div>
+      <div class="gi"><div class="gn">💪 Creatine Monohydrate</div><div class="dt">5g per day, every day — even rest days. Cheap (~$15/month), proven to increase strength and muscle. Just mix in water.</div></div>
+      <div class="gi"><div class="gn">☀️ Vitamin D3</div><div class="dt">Most teens are deficient. 1,000–2,000 IU daily. Boosts energy, mood, and testosterone. Under $10 for a whole year.</div></div>
+      <div class="gi"><div class="gn">🐟 Fish Oil</div><div class="dt">1–2 grams daily with food. Reduces inflammation and soreness from training. Helps your brain and joints.</div></div>
     </div>
-    <button onclick="closeSafariModal()" style="margin-top:20px;width:100%;padding:16px;background:var(--red);color:white;border:none;border-radius:12px;font-size:16px;font-weight:700;font-family:Inter,sans-serif;cursor:pointer">Got it!</button>
+  </div>
+
+  <!-- MOOD -->
+  <div id="ext-mood" style="display:none">
+    <div class="card">
+      <div class="card-title">😊 Today's Mood Check-In</div>
+      <p style="font-size:13px;color:var(--tx2);margin-bottom:14px">Rate how you're feeling. Tracking this helps you see what habits actually affect your mood.</p>
+      <label>Overall mood today (1–10)</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+        ${[1,2,3,4,5,6,7,8,9,10].map(n=>`<div onclick="selectMood(${n})" id="mood-btn-${n}" style="width:46px;height:46px;border-radius:10px;background:var(--bg3);border:2px solid var(--bdr);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;cursor:pointer;transition:all .2s;color:var(--tx2)">${n}</div>`).join('')}
+      </div>
+      <label>What's affecting your mood today?</label>
+      <textarea id="mood-note" placeholder="Optional — good workout, bad sleep, stressed about something..."></textarea>
+      <button class="btn btn-p" onclick="saveMood()">Log Mood</button>
+    </div>
+    <div class="slabel">Mood History (Last 14 Days)</div>
+    <div class="card">
+      <div style="display:flex;align-items:flex-end;gap:4px;height:80px;padding-top:20px" id="mood-chart"></div>
+      <div style="font-size:12px;color:var(--tx3);margin-top:8px">Avg this week: <strong id="mood-avg" style="color:var(--rl)">—</strong> / 10</div>
+    </div>
+    <div id="mood-log-list"></div>
+  </div>
+
+  <!-- IMPORTANT DATES -->
+  <div id="ext-dates" style="display:none">
+    <div class="card">
+      <div class="card-title">📅 Important Dates</div>
+      <p style="font-size:13px;color:var(--tx2);margin-bottom:14px">Add birthdays, anniversaries, and anything you don't want to forget. The app will remind you when they're coming up.</p>
+      <input type="text" id="date-name" placeholder="What is it? (e.g. Girlfriend's Birthday)">
+      <input type="date" id="date-val">
+      <button class="btn btn-p" onclick="addImportantDate()">Add Date</button>
+    </div>
+    <div class="slabel">Upcoming Dates</div>
+    <div id="dates-list"></div>
   </div>
 </div>
 
@@ -773,16 +927,15 @@ label{display:block;font-size:14px;color:var(--tx2);margin-bottom:6px}
 const S={g:(k,d)=>{try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):d}catch{return d}},s:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
 
 // NAV
-function showPage(id,el){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));document.getElementById('page-'+id).classList.add('active');if(el)el.classList.add('active');window.scrollTo(0,0);}
-
-// OPEN IN SAFARI — shows step-by-step modal since app runs inside Claude viewer
-function openInSafari(){
-  const modal=document.getElementById('safari-modal');
-  if(modal)modal.style.display='flex';
-}
-function closeSafariModal(){
-  const modal=document.getElementById('safari-modal');
-  if(modal)modal.style.display='none';
+function showPage(id,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  if(el)el.classList.add('active');
+  // Highlight correct nav item based on page
+  const navMap={home:'nav-home',fitness:'nav-fitness',tasks:'nav-tasks',ai:'nav-ai',menu:'nav-menu'};
+  if(navMap[id]){const ni=document.getElementById(navMap[id]);if(ni)ni.classList.add('active');}
+  window.scrollTo(0,0);
 }
 
 // COUNTDOWN
@@ -1046,7 +1199,43 @@ updateHealthAvgs();
 
 // TASKS
 const defaultTasks=[{id:1,text:'Wake up & weigh yourself',time:'7:17 AM',done:false},{id:2,text:'Drink 16 oz water right away',time:'7:20 AM',done:false},{id:3,text:'High-protein breakfast',time:'8:00 AM',done:false},{id:4,text:'Review class notes',time:'9:00 AM',done:false},{id:5,text:'Complete today\'s workout',time:'11:00 AM',done:false},{id:6,text:'Lunch + track food',time:'1:00 PM',done:false},{id:7,text:'Study 1 focused hour',time:'3:00 PM',done:false},{id:8,text:'Check in with girlfriend',time:'5:00 PM',done:false},{id:9,text:'Apply to 1 job or side hustle',time:'6:00 PM',done:false},{id:10,text:'Log sleep, water, steps',time:'9:30 PM',done:false}];
-function timeToMins(t){if(!t)return 0;const m=t.match(/(\d+):(\d+)\s*(AM|PM)/i);if(!m)return 0;let h=parseInt(m[1]),mn=parseInt(m[2]),ap=m[3].toUpperCase();if(ap==='PM'&&h!==12)h+=12;if(ap==='AM'&&h===12)h=0;return h*60+mn;}
+
+// Always convert any time string to normal 12hr format — locks out military time forever
+function toNormalTime(t){
+  if(!t)return '';
+  // Already normal format like "7:17 AM" — return as-is
+  if(/\d+:\d+\s*(AM|PM)/i.test(t))return t.toUpperCase();
+  // Military format like "07:17" or "19:30" — convert it
+  const m=t.match(/^(\d{1,2}):(\d{2})$/);
+  if(!m)return t;
+  let h=parseInt(m[1]),mn=m[2];
+  const ap=h>=12?'PM':'AM';
+  h=h%12||12;
+  return `${h}:${mn} ${ap}`;
+}
+
+function timeToMins(t){
+  const normal=toNormalTime(t);
+  const m=normal.match(/(\d+):(\d+)\s*(AM|PM)/i);
+  if(!m)return 9999;
+  let h=parseInt(m[1]),mn=parseInt(m[2]),ap=m[3].toUpperCase();
+  if(ap==='PM'&&h!==12)h+=12;
+  if(ap==='AM'&&h===12)h=0;
+  return h*60+mn;
+}
+
+// Migrate any stored tasks that have military time
+function migrateTasks(){
+  const stored=S.g('tasks',null);
+  if(!stored)return;
+  let changed=false;
+  stored.forEach(t=>{
+    const converted=toNormalTime(t.time);
+    if(converted!==t.time){t.time=converted;changed=true;}
+  });
+  if(changed)S.s('tasks',stored);
+}
+migrateTasks();
 function renderTasks(){
   let tasks=S.g('tasks',defaultTasks);
   tasks.sort((a,b)=>timeToMins(a.time)-timeToMins(b.time));
@@ -1056,7 +1245,7 @@ function renderTasks(){
       <div class="cb ${t.done?'on':''}" onclick="toggleTask(${t.id})"></div>
       <span class="cit">${t.text}</span>
       <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
-        <span class="ctm" id="ttime${t.id}">${t.time||''}</span>
+        <span class="ctm" id="ttime${t.id}">${toNormalTime(t.time)}</span>
         <button onclick="showTimeEdit(${t.id})" style="background:none;border:none;font-size:16px;cursor:pointer;padding:4px;color:var(--tx3);min-width:30px">✏️</button>
         <button onclick="delTask(${t.id})" style="background:none;border:none;font-size:14px;cursor:pointer;padding:4px;color:var(--tx3);min-width:30px">✕</button>
       </div>
@@ -1083,7 +1272,7 @@ function showTimeEdit(id){
 function saveTaskTime(id){
   const inp=document.getElementById('tinput'+id);
   if(!inp)return;
-  const newTime=inp.value.trim();
+  const newTime=toNormalTime(inp.value.trim());
   if(!newTime)return;
   const tasks=S.g('tasks',defaultTasks);
   const t=tasks.find(x=>x.id===id);
@@ -1416,6 +1605,267 @@ function appendNutMsg(txt,role){
 // Init nutrition on load
 updateNutUI();
 renderFoodLog();
+
+// ===== WEEKLY REPORT CARD =====
+async function generateReport(){
+  const wo=S.g('workouts_week',[]).length;
+  const water=S.g('water_today',0);
+  const tasks=S.g('tasks',[]);
+  const taskDone=tasks.filter(t=>t.done).length;
+  const taskTotal=tasks.length||1;
+  const studyDays=S.g('studied_days',[]).length;
+  const liftLog=S.g('lift_log',[]);
+  const thisWeekLifts=liftLog.filter(l=>{const d=new Date(l.date);const now=new Date();return (now-d)<7*86400000;}).length;
+  const moodLog=S.g('mood_log',[]).filter(m=>{const d=new Date(m.date);return (new Date()-d)<7*86400000;});
+  const avgMood=moodLog.length?Math.round(moodLog.reduce((a,m)=>a+m.rating,0)/moodLog.length):null;
+  const sleepLog=S.g('sleep_log',[]).slice(-7);
+  const avgSleep=sleepLog.length?(sleepLog.reduce((a,s)=>a+s.hrs,0)/sleepLog.length).toFixed(1):null;
+
+  const scores=[
+    {label:'💪 Workouts (5/week goal)',score:Math.round((wo/5)*100),val:`${wo}/5 workouts`},
+    {label:'✅ Tasks Completed',score:Math.round((taskDone/taskTotal)*100),val:`${taskDone}/${taskTotal} tasks`},
+    {label:'📚 Study Sessions',score:Math.min(100,studyDays*14),val:`${studyDays} sessions`},
+    {label:'💧 Water (128oz goal)',score:Math.min(100,Math.round((water/128)*100)),val:`${water}/128 oz`},
+    {label:'😊 Mood Average',score:avgMood?Math.round((avgMood/10)*100):0,val:avgMood?`${avgMood}/10`:'Not tracked'},
+    {label:'😴 Sleep Average',score:avgSleep?Math.min(100,Math.round((parseFloat(avgSleep)/9)*100)):0,val:avgSleep?`${avgSleep} hrs`:'Not tracked'},
+  ];
+
+  const overall=Math.round(scores.reduce((a,s)=>a+s.score,0)/scores.length);
+  const grade=overall>=90?'A+':overall>=85?'A':overall>=80?'A-':overall>=75?'B+':overall>=70?'B':overall>=65?'B-':overall>=60?'C+':overall>=55?'C':overall>=50?'C-':'D';
+  const gradeClass=grade.startsWith('A')?'grade-A':grade.startsWith('B')?'grade-B':grade.startsWith('C')?'grade-C':'grade-D';
+
+  document.getElementById('report-grade').textContent=grade;
+  document.getElementById('report-grade').className='grade-display '+gradeClass;
+  document.getElementById('report-score').textContent=`${overall}/100 overall`;
+
+  const catEl=document.getElementById('report-categories');
+  catEl.innerHTML=scores.map(s=>`
+    <div class="report-row">
+      <div><div class="report-row-label">${s.label}</div><div style="font-size:12px;color:var(--tx3)">${s.val}</div></div>
+      <div class="report-row-score" style="color:${s.score>=80?'#4ade80':s.score>=60?'#fbbf24':'#f87171'}">${s.score}%</div>
+    </div>`).join('');
+
+  // AI feedback
+  const advCard=document.getElementById('report-advice-card');
+  const advEl=document.getElementById('report-advice');
+  advCard.style.display='block';
+  advEl.innerHTML='<span class="spinner"></span> Getting coach feedback...';
+  try{
+    const txt=await claude([{role:'user',content:`Orion is a 15-year-old with these weekly stats: ${scores.map(s=>`${s.label}: ${s.val} (${s.score}%)`).join(', ')}. Overall grade: ${grade} (${overall}/100). Give him 3 sentences of honest coaching feedback — what he crushed, what needs work, and one specific thing to focus on next week. Be direct and encouraging, talk like a coach, not a teacher.`}],400);
+    advEl.textContent=txt;
+  }catch(e){advEl.textContent='Could not get AI feedback right now. Check your internet.';}
+}
+
+// Strength charts from lift log
+function buildStrengthCharts(){
+  const log=S.g('lift_log',[]);
+  const bench=log.filter(l=>l.type==='bench').slice(-10).map(l=>l.wt);
+  const squat=log.filter(l=>l.type==='squat').slice(-10).map(l=>l.wt);
+  const dead=log.filter(l=>l.type==='deadlift').slice(-10).map(l=>l.wt);
+  renderMiniChart('bench-chart',bench);
+  renderMiniChart('squat-chart',squat);
+  renderMiniChart('dead-chart',dead);
+}
+
+// Study hours from study sessions (each session = 30 min avg)
+function buildStudyStats(){
+  const days=S.g('studied_days',[]);
+  const hrs=(days.length*0.5).toFixed(1);
+  const pct=Math.round(Math.min(100,(hrs/100)*100));
+  const el=document.getElementById('total-study-hrs');
+  const bar=document.getElementById('study-hr-bar');
+  const pctEl=document.getElementById('study-hr-pct');
+  const streakEl=document.getElementById('study-streak');
+  if(el)el.textContent=hrs;
+  if(bar)bar.style.width=pct+'%';
+  if(pctEl)pctEl.textContent=pct+'%';
+  if(streakEl)streakEl.textContent=days.length>0?`${days.length} study sessions logged this summer`:'Complete study sessions on the School page to track hours';
+}
+
+// ===== MEASUREMENTS =====
+function saveMeasurements(){
+  const entry={
+    date:new Date().toLocaleDateString(),
+    neck:parseFloat(document.getElementById('meas-neck').value)||null,
+    chest:parseFloat(document.getElementById('meas-chest').value)||null,
+    waist:parseFloat(document.getElementById('meas-waist').value)||null,
+    hips:parseFloat(document.getElementById('meas-hips').value)||null,
+    arm:parseFloat(document.getElementById('meas-arm').value)||null,
+    thigh:parseFloat(document.getElementById('meas-thigh').value)||null,
+  };
+  if(!Object.values(entry).slice(1).some(v=>v))return alert('Enter at least one measurement.');
+  const hist=S.g('meas_history',[]);
+  hist.unshift(entry);
+  S.s('meas_history',hist);
+  ['neck','chest','waist','hips','arm','thigh'].forEach(f=>document.getElementById('meas-'+f).value='');
+  renderMeasHistory();
+  alert('Measurements saved! ✅');
+}
+function renderMeasHistory(){
+  const hist=S.g('meas_history',[]);
+  const el=document.getElementById('meas-history');
+  if(!el)return;
+  if(!hist.length){el.innerHTML='<div style="font-size:14px;color:var(--tx3);padding:12px;text-align:center">No measurements logged yet</div>';return;}
+  el.innerHTML=hist.slice(0,5).map((e,i)=>`
+    <div class="meas-entry">
+      <div class="meas-date">${e.date}${i===0?' · Latest':''}</div>
+      <div class="meas-grid">
+        ${e.neck?`<div class="meas-val"><strong>${e.neck}"</strong>Neck</div>`:''}
+        ${e.chest?`<div class="meas-val"><strong>${e.chest}"</strong>Chest</div>`:''}
+        ${e.waist?`<div class="meas-val"><strong>${e.waist}"</strong>Waist</div>`:''}
+        ${e.hips?`<div class="meas-val"><strong>${e.hips}"</strong>Hips</div>`:''}
+        ${e.arm?`<div class="meas-val"><strong>${e.arm}"</strong>Arm</div>`:''}
+        ${e.thigh?`<div class="meas-val"><strong>${e.thigh}"</strong>Thigh</div>`:''}
+      </div>
+    </div>`).join('');
+}
+
+// ===== SUPPLEMENTS =====
+const defaultSupps=[
+  {id:1,name:'Protein Shake (post-workout)',done:false},
+  {id:2,name:'Creatine 5g',done:false},
+  {id:3,name:'Vitamin D3',done:false},
+  {id:4,name:'Fish Oil',done:false},
+];
+function renderSupps(){
+  const supps=S.g('supplements',defaultSupps);
+  const el=document.getElementById('supp-list');
+  if(!el)return;
+  el.innerHTML=supps.map(s=>`
+    <div class="ci ${s.done?'done':''}">
+      <div class="cb ${s.done?'on':''}" onclick="toggleSupp(${s.id})"></div>
+      <span class="cit">${s.name}</span>
+      <span style="cursor:pointer;color:var(--tx3);padding:4px 8px;font-size:14px" onclick="deleteSupp(${s.id})">✕</span>
+    </div>`).join('');
+}
+function toggleSupp(id){
+  const s=S.g('supplements',defaultSupps);
+  const x=s.find(y=>y.id===id);
+  if(x)x.done=!x.done;
+  S.s('supplements',s);
+  renderSupps();
+}
+function deleteSupp(id){S.s('supplements',S.g('supplements',defaultSupps).filter(s=>s.id!==id));renderSupps();}
+function addSupp(){
+  const t=document.getElementById('supp-in').value.trim();
+  if(!t)return;
+  const s=S.g('supplements',defaultSupps);
+  s.push({id:Date.now(),name:t,done:false});
+  S.s('supplements',s);
+  document.getElementById('supp-in').value='';
+  renderSupps();
+}
+
+// ===== MOOD =====
+let selectedMood=null;
+function selectMood(n){
+  selectedMood=n;
+  for(let i=1;i<=10;i++){
+    const btn=document.getElementById('mood-btn-'+i);
+    if(btn)btn.className=i===n?'mood-sel':'';
+    if(btn&&i!==n){btn.style.cssText='width:46px;height:46px;border-radius:10px;background:var(--bg3);border:2px solid var(--bdr);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;cursor:pointer;transition:all .2s;color:var(--tx2)';}
+    if(btn&&i===n){btn.style.cssText='width:46px;height:46px;border-radius:10px;background:var(--red);border:2px solid var(--red);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;cursor:pointer;transition:all .2s;color:white';}
+  }
+}
+function saveMood(){
+  if(!selectedMood)return alert('Select a mood rating first.');
+  const note=document.getElementById('mood-note').value.trim();
+  const log=S.g('mood_log',[]);
+  log.push({date:new Date().toISOString(),rating:selectedMood,note,dateStr:new Date().toLocaleDateString()});
+  S.s('mood_log',log);
+  document.getElementById('mood-note').value='';
+  selectedMood=null;
+  for(let i=1;i<=10;i++){const btn=document.getElementById('mood-btn-'+i);if(btn)btn.style.cssText='width:46px;height:46px;border-radius:10px;background:var(--bg3);border:2px solid var(--bdr);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;cursor:pointer;transition:all .2s;color:var(--tx2)';}
+  renderMoodChart();
+  alert('Mood logged! ✅');
+}
+function renderMoodChart(){
+  const log=S.g('mood_log',[]).slice(-14);
+  const chart=document.getElementById('mood-chart');
+  const avgEl=document.getElementById('mood-avg');
+  const listEl=document.getElementById('mood-log-list');
+  if(!chart)return;
+  if(!log.length){chart.innerHTML='<div style="font-size:12px;color:var(--tx3)">No mood data yet</div>';return;}
+  const max=10;
+  chart.innerHTML=log.map(m=>{
+    const h=Math.max(4,Math.round((m.rating/max)*70));
+    const col=m.rating>=8?'#4ade80':m.rating>=6?'#fbbf24':'#f87171';
+    return `<div style="flex:1;background:${col};border-radius:3px 3px 0 0;height:${h}px;min-width:8px;position:relative" title="${m.rating}/10 — ${m.dateStr}"></div>`;
+  }).join('');
+  const thisWeek=log.filter(m=>(new Date()-new Date(m.date))<7*86400000);
+  if(thisWeek.length&&avgEl)avgEl.textContent=(thisWeek.reduce((a,m)=>a+m.rating,0)/thisWeek.length).toFixed(1);
+  if(listEl){
+    listEl.innerHTML=log.slice(-5).reverse().map(m=>`
+      <div class="gi" style="margin-bottom:8px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:14px;font-weight:600">${m.rating}/10 ${m.rating>=8?'😊':m.rating>=6?'😐':'😔'}</span>
+          <span style="font-size:12px;color:var(--tx3)">${m.dateStr}</span>
+        </div>
+        ${m.note?`<div style="font-size:13px;color:var(--tx2);margin-top:4px">${m.note}</div>`:''}
+      </div>`).join('');
+  }
+}
+
+// ===== IMPORTANT DATES =====
+function addImportantDate(){
+  const name=document.getElementById('date-name').value.trim();
+  const val=document.getElementById('date-val').value;
+  if(!name||!val)return alert('Fill in both fields.');
+  const dates=S.g('important_dates',[]);
+  dates.push({id:Date.now(),name,date:val});
+  S.s('important_dates',dates);
+  document.getElementById('date-name').value='';
+  document.getElementById('date-val').value='';
+  renderDates();
+}
+function renderDates(){
+  const dates=S.g('important_dates',[]);
+  const el=document.getElementById('dates-list');
+  if(!el)return;
+  if(!dates.length){el.innerHTML='<div style="font-size:14px;color:var(--tx3);padding:12px;text-align:center">No dates added yet</div>';return;}
+  const now=new Date();
+  const sorted=[...dates].map(d=>{
+    const target=new Date(d.date);
+    const thisYear=new Date(now.getFullYear(),target.getMonth(),target.getDate());
+    if(thisYear<now)thisYear.setFullYear(now.getFullYear()+1);
+    const days=Math.ceil((thisYear-now)/86400000);
+    return{...d,days,display:target.toLocaleDateString('en-US',{month:'long',day:'numeric'})};
+  }).sort((a,b)=>a.days-b.days);
+  el.innerHTML=sorted.map(d=>`
+    <div class="date-card">
+      <div>
+        <div class="date-name">${d.name}</div>
+        <div class="date-actual">${d.display}</div>
+      </div>
+      <div style="text-align:right">
+        <div class="date-days">${d.days===0?'TODAY! 🎉':d.days===1?'Tomorrow!':d.days+' days'}</div>
+        <div style="font-size:12px;cursor:pointer;color:var(--tx3);margin-top:4px" onclick="deleteDate(${d.id})">Remove</div>
+      </div>
+    </div>`).join('');
+}
+function deleteDate(id){S.s('important_dates',S.g('important_dates',[]).filter(d=>d.id!==id));renderDates();}
+
+function switchExtras(type,el){
+  document.querySelectorAll('#page-extras .pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  ['measurements','supplements','mood','dates'].forEach(t=>document.getElementById('ext-'+t).style.display=t===type?'block':'none');
+  if(type==='supplements')renderSupps();
+  if(type==='mood')renderMoodChart();
+  if(type==='measurements')renderMeasHistory();
+  if(type==='dates')renderDates();
+}
+
+// Init new pages when navigated to - no wrapper needed
+function showPageExtras(id,el){
+  showPage(id,el);
+  if(id==='report'){buildStrengthCharts();buildStudyStats();}
+  if(id==='extras'){renderMeasHistory();renderDates();}
+}
+
+// Init on load
+renderMeasHistory();
+renderDates();
+renderMoodChart();
 
 // NOTIFICATIONS
 if(!S.g('notif_asked',false)){S.s('notif_asked',true);setTimeout(()=>{if('Notification' in window&&Notification.permission==='default')if(confirm('Allow daily reminders? Orion\'s App will remind you to log your goals.'))Notification.requestPermission().then(p=>{if(p==='granted')new Notification('Orion\'s App',{body:'Reminders on. You\'re locked in. 🔥'});});},2500);}
